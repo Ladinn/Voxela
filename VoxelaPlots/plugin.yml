@@ -1,0 +1,16 @@
+name: VoxelaPlots
+main: com.voxela.plots.Main
+version: 1.0
+depend: [WorldEdit, WorldGuard, HolographicDisplays, Vault]
+commands:
+    plot:
+        description: Voxela Plots main command.
+        usage: /<command>
+permissions:
+    voxela.plots.*:
+        description: Access to all Voxela Plots commands.
+        children:
+            voxela.plots.admin
+    voxela.plots.admin:
+        description: Allows creation and deletion of plots.
+        default: op
