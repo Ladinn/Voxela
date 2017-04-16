@@ -187,6 +187,11 @@ public class PlotCommand implements CommandExecutor  {
 					
 					if (player.isOp() || player.hasPermission(new Permission("voxela.plots.admin"))) {
 						
+						if (!(player.getWorld() == Main.getInstance().getServer().getWorld("world"))) {
+							player.sendMessage(Main.gamePrefix + ChatColor.RED + "Plots cannot be created in this world!");
+							return true;							
+						}
+						
 						if (!(args.length > 1) || args.length > 2) {
 							player.sendMessage(syntaxError);
 							return true;
@@ -207,7 +212,7 @@ public class PlotCommand implements CommandExecutor  {
 							return true;
 						}
 						
-					} else player.sendMessage(noPerm);
+					} else player.sendMessage(noPerm); return true;
 				}
 					
 				if (args[0].equalsIgnoreCase("delete")) {
@@ -227,12 +232,12 @@ public class PlotCommand implements CommandExecutor  {
 							} else {
 								
 								ProtectedRegion region = Main.getWorldGuard().getRegionManager(player.getWorld()).getRegion(args[1]);
-								player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "Valid region. Deleting.");
+								player.sendMessage(Main.gamePrefix + ChatColor.GRAY + "Valid region. Deleting.");
 								DeletePlot.delPlot(player, region);
 								return true;
 							
 							}						
-						} else player.sendMessage(noPerm);
+						} else player.sendMessage(noPerm); return true;
 					}
 				}
 				

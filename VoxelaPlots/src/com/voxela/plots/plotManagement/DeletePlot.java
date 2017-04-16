@@ -21,14 +21,16 @@ public class DeletePlot {
 	public static void delPlot(Player player, ProtectedRegion region) {
 	
 		// Paste schematic...
+		long startMillis = System.currentTimeMillis();
+		
 		try {
 			WorldEditUtils.restoreRegion(player.getWorld(), region);
-			player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "Restoring region to original schematic...");
+			player.sendMessage(Main.gamePrefix + ChatColor.GRAY + "Restoring region to original schematic...");
 		} catch (DataException | MaxChangedBlocksException | IOException e) {
 			player.sendMessage(Main.gamePrefix + ChatColor.RED + "Exception while restoring plot schematic!");
 			e.printStackTrace();
 		}
-			
+					
 		// Delete WorldGuard region...
 		RegionContainer container = Main.getWorldGuard().getRegionContainer();
 		RegionManager regionManager = container.get(player.getWorld());
@@ -38,6 +40,10 @@ public class DeletePlot {
 	    // Delete the hologram...
 		HologramDatabase.deleteHologram(region.getId());
 		HologramDatabase.trySaveToDisk();
+		
+		long endMillis = System.currentTimeMillis();
+
+		player.sendMessage(Main.gamePrefix + ChatColor.GRAY + "Took " + (endMillis - startMillis) + "ms.");
 		player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "Successfully deleted region: " + ChatColor.GOLD + region.getId());
 	}
 }

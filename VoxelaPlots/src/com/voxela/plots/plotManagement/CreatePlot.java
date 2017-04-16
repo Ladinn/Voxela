@@ -40,7 +40,7 @@ public class CreatePlot {
 		
 		// Add 1 to data.yml.
 		FileManager.dataFileCfg.set("plotcount", plotNum + 1);
-		FileManager.saveDataFile(player);
+		FileManager.saveDataFile();
 		
 		// Save the region as a schematic.
 		WorldEditUtils.saveSelection(region, player);
@@ -72,10 +72,13 @@ public class CreatePlot {
 		regionHologram.getVisibilityManager().setVisibleByDefault(true);
 		regionHologram.insertItemLine(0, new ItemStack(Material.GOLD_NUGGET));
 		regionHologram.insertTextLine(1, "" + ChatColor.AQUA + ChatColor.BOLD + "For sale: " + ChatColor.RESET + ChatColor.GOLD + "$" + price + " per week.");
-		regionHologram.insertTextLine(2, ChatColor.ITALIC + "Right click for info!");
-		regionHologram.insertTextLine(3, "" + ChatColor.GRAY + ChatColor.ITALIC + region.getId());
-		
+		regionHologram.insertTextLine(2, "" + ChatColor.GRAY + ChatColor.ITALIC + "/plot info " + region.getId());
+
 		HologramDatabase.saveHologram(regionHologram);
 		HologramDatabase.trySaveToDisk();
+		
+		FileManager.dataFileCfg.set("regions." + region.getId() + ".price", + price);
+		FileManager.saveDataFile();
+
 	}
 }

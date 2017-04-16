@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.voxela.plots.timeUtils.RentTime;
 import com.voxela.plots.utils.FileManager;
 
 import net.md_5.bungee.api.ChatColor;
@@ -16,6 +17,8 @@ import net.milkbowl.vault.economy.Economy;
 public class Main extends JavaPlugin implements Listener {
 	
 	private static Main instance;
+    private static Economy econ = null;
+
 
 	public static String consolePrefix = "[Voxela] ";
 	public static String gamePrefix = ChatColor.DARK_GRAY + "[" + ChatColor.AQUA + "Voxela" + ChatColor.DARK_GRAY + "] ";
@@ -27,6 +30,8 @@ public class Main extends JavaPlugin implements Listener {
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		FileManager.loadFiles();
 		this.getCommand("plot").setExecutor(new PlotCommand(this));
+		setupEconomy();
+		RentTime.checkEveryTenMins();
 	}
 
 	public void onDisable() {
@@ -58,15 +63,20 @@ public class Main extends JavaPlugin implements Listener {
 		return (WorldEditPlugin) plugin;
 	}
 	
-    public static Economy economy = null;
-    public boolean Economy() {
-    	
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if (economyProvider != null) {
-            economy = economyProvider.getProvider();
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
         }
- 
-        return (economy != null);
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
+	
+    public static Economy getEconomy() {
+        return econ;
     }
 	
 }

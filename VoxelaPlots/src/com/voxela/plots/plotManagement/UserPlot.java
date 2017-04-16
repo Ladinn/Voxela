@@ -10,14 +10,23 @@ import org.bukkit.entity.Player;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.voxela.plots.Main;
+import com.voxela.plots.timeUtils.TimeManager;
 import com.voxela.plots.utils.ChatUtils;
+import com.voxela.plots.utils.FileManager;
 
 public class UserPlot {
 	
 	public static void plotInfo(Player player, ProtectedRegion region) {
 		
+		if (!(FileManager.dataFileCfg.isSet("regions." + region.getId()))) {
+			player.sendMessage(Main.gamePrefix + ChatColor.RED + "This property is not available.");
+			return;
+		}
+		
 		player.sendMessage(ChatUtils.formatTitle("Voxela Plots"));
 		ChatUtils.sendCenteredMessage(player, ChatColor.GOLD + "Region Info");
+				
+		int plotPrice = FileManager.dataFileCfg.getInt("regions." + region.getId() + ".price");
 		
 		// If region is owned...
 		if ((region.getOwners().getUniqueIds().toString().contains("-") )) {
@@ -49,15 +58,22 @@ public class UserPlot {
 				memberName = "None!";
 			}
 			
+			String rentDue = TimeManager.timeFormatter(FileManager.dataFileCfg.getString("regions." + region.getId() + ".rentuntil"));
+			
 			player.sendMessage(ChatColor.DARK_AQUA + "Region: " + ChatColor.GRAY + region.getId());
-			player.sendMessage(ChatColor.DARK_AQUA + "Price: " + ChatColor.GRAY + "$PRICE");
-			player.sendMessage(ChatColor.DARK_AQUA + "Rent Due: " + ChatColor.GRAY + "DAY / TIME");
+			player.sendMessage(ChatColor.DARK_AQUA + "Price: " + ChatColor.GRAY + "$" + plotPrice + "/week");
+			player.sendMessage(ChatColor.DARK_AQUA + "Rent Due: " + ChatColor.GRAY + rentDue);
 			player.sendMessage(ChatColor.DARK_AQUA + "Owner: " + ChatColor.GRAY + ownerName);
 			player.sendMessage(ChatColor.DARK_AQUA + "Members: " + ChatColor.GRAY + memberName);
+			return;
 			
 		} else {
+			
 			player.sendMessage(ChatColor.DARK_AQUA + "Region: " + ChatColor.GRAY + region.getId());
-			player.sendMessage(ChatColor.DARK_AQUA + "Price: " + ChatColor.GRAY + "$PRICE");
+			player.sendMessage(ChatColor.DARK_AQUA + "Price: " + ChatColor.GRAY + "$" + plotPrice + "/week");
+			player.sendMessage("");
+			ChatUtils.sendCenteredMessage(player, ChatColor.GREEN + "This plot is for sale! Type" + ChatColor.GOLD + " /plot rent " + region.getId() + ChatColor.GREEN + " to rent it.");
+			return;
 		}
 		
 	}

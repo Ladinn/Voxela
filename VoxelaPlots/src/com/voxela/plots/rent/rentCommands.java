@@ -1,23 +1,54 @@
 package com.voxela.plots.rent;
 
+import java.util.UUID;
+
 import org.bukkit.entity.Player;
 
+import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.voxela.plots.Main;
+import com.voxela.plots.timeUtils.TimeManager;
+import com.voxela.plots.utils.ChatUtils;
+import com.voxela.plots.utils.FileManager;
+
 import net.md_5.bungee.api.ChatColor;
 
 public class rentCommands {
-	
+		
 	@SuppressWarnings("deprecation")
 	public static void rent(Player player, ProtectedRegion region) {
 		
-		player.sendMessage("" + Main.economy.format(Main.economy.getBalance(player.getName())));
-		if (Main.economy.getBalance(player.getName()) > 1) {
+		if (!(FileManager.dataFileCfg.isSet("regions." + region.getId()))) {
+			player.sendMessage(Main.gamePrefix + ChatColor.RED + "This property is not for sale.");
+			return;
+		}
+		
+		// If region is owned...
+		if ((region.getOwners().getUniqueIds().toString().contains("-") )) {
+			player.sendMessage(Main.gamePrefix + ChatColor.RED + "This plot is already owned!");
+			return;
+		}
+		
+		int plotPrice = FileManager.dataFileCfg.getInt("regions." + region.getId() + ".price");
+		
+		if (Main.getEconomy().getBalance(player.getName()) >= plotPrice) {
 			
-			player.sendMessage("test");
+			FileManager.dataFileCfg.set("regions." + region.getId() + ".renter", player.getName());
+			FileManager.dataFileCfg.set("regions." + region.getId() + ".rentuntil", TimeManager.timePlusWeek());
+			FileManager.saveDataFile();
 			
+			UUID playerUUID = ChatUtils.toUUID(player.getName());
+			
+			DefaultDomain domain = region.getOwners();
+			domain.addPlayer(playerUUID);
+			region.setOwners(domain);
+			
+			player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "You are now renting " + ChatColor.GOLD + region.getId() + ChatColor.GREEN + " for " + ChatColor.GOLD + "$" + plotPrice + ChatColor.GREEN + " per week!");
+			player.sendMessage(Main.gamePrefix + ChatColor.GRAY + "Make sure you have enough money in your balance to afford the rent on " + ChatColor.DARK_AQUA + 
+					TimeManager.timeFormatter(TimeManager.timePlusWeek()) + ChatColor.GRAY + " or it will be reset! Current balance is " + ChatColor.DARK_AQUA + "$" + 
+					Main.getEconomy().getBalance(player.getName()) + ".");
 		} else {
-			player.sendMessage(Main.gamePrefix + ChatColor.RED + "You cannot afford this plot!");
+			player.sendMessage(Main.gamePrefix + ChatColor.RED + "You can't afford this plot!");
 		}
 		
 	}

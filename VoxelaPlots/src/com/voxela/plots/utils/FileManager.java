@@ -3,10 +3,8 @@ package com.voxela.plots.utils;
 import java.io.File;
 import java.io.IOException;
 
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 
 import com.voxela.plots.Main;
 
@@ -18,12 +16,12 @@ public class FileManager {
 	public static void loadFiles() {
 		
 		File schemFolder = new File(Main.getInstance().getDataFolder() + File.separator + "schematics");
-		if(!schemFolder.exists()) {
+		if (!schemFolder.exists()) {
 			System.out.print(Main.consolePrefix + "Creating schematic folder...");
 			schemFolder.mkdirs();
 		}
 		
-		if(!dataFile.exists()) {
+		if (!dataFile.exists()) {
 			try {
 				System.out.print(Main.consolePrefix + "Creating data file...");
 				dataFile.createNewFile();
@@ -49,12 +47,11 @@ public class FileManager {
 		}
 	}
 	
-	public static void saveDataFile(Player player) {
+	public static void saveDataFile() {
 		try {
 			dataFileCfg.save(dataFile);
 		} catch (IOException e) {
 			System.out.print(Main.consolePrefix + "Error creating data file!");
-			player.sendMessage(Main.gamePrefix + ChatColor.RED + "Error creating data file!");
 			e.printStackTrace();
 		}		
 	}

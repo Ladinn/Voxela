@@ -10,7 +10,11 @@ permissions:
     voxela.plots.*:
         description: Access to all Voxela Plots commands.
         children:
-            voxela.plots.admin
+            voxela.plots.admin: true
     voxela.plots.admin:
         description: Allows creation and deletion of plots.
         default: op
+        
+        TO DO:
+        - holograms on rent/unrent
+        - greeting on rent/unrent
