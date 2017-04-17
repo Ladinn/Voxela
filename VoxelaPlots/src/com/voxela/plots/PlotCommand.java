@@ -2,6 +2,7 @@ package com.voxela.plots;
 
 import net.md_5.bungee.api.ChatColor;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -228,7 +229,7 @@ public class PlotCommand implements CommandExecutor  {
 							return true;							
 						}
 						
-						if (!(args.length > 1) || args.length > 2) {
+						if (!(args.length > 2) || args.length > 3) {
 							player.sendMessage(syntaxError);
 							return true;
 						} else {
@@ -244,7 +245,8 @@ public class PlotCommand implements CommandExecutor  {
 								return true;
 							}
 							
-							CreatePlot.createPlot(player, price);
+							World world = Bukkit.getWorld(args[2]);
+							CreatePlot.createPlot(player, price, world);
 							return true;
 						}
 						

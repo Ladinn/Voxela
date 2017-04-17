@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
@@ -20,9 +19,9 @@ import com.voxela.plots.Main;
 @SuppressWarnings("deprecation")
 public class WorldEditUtils {
 	
-	public static void saveSelection(ProtectedCuboidRegion region, Player player) {
+	public static void saveSelection(ProtectedCuboidRegion region, World world) {
 		
-		EditSession es = new EditSession(new BukkitWorld(player.getWorld()),Integer.MAX_VALUE);
+		EditSession es = new EditSession(new BukkitWorld(world),Integer.MAX_VALUE);
 		Vector origin = new Vector(region.getMinimumPoint().getBlockX(), region.getMinimumPoint().getBlockY(), region.getMinimumPoint().getBlockZ());
 		Vector size = (new Vector(region.getMaximumPoint().getBlockX(), region.getMaximumPoint().getBlockY(), region.getMaximumPoint().getBlockZ()).subtract(origin)).add(new Vector(1, 1, 1));			
 		CuboidClipboard clipboard = new CuboidClipboard(size, origin);

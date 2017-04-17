@@ -2,6 +2,7 @@ package com.voxela.plots.plotManagement;
 
 import net.md_5.bungee.api.ChatColor;
 
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldedit.bukkit.selections.Selection;
@@ -17,7 +18,7 @@ import com.voxela.plots.utils.WorldEditUtils;
 public class CreatePlot {
 	
 	@SuppressWarnings("deprecation")
-	public static void createPlot(Player player, int price) {
+	public static void createPlot(Player player, int price, World world) {
 		
 		Selection sel = Main.getWorldEdit().getSelection(player);
 		
@@ -37,7 +38,7 @@ public class CreatePlot {
 		FileManager.saveDataFile();
 		
 		// Save the region as a schematic.
-		WorldEditUtils.saveSelection(region, player);
+		WorldEditUtils.saveSelection(region, world);
 		
 		// Set the region flags.        
         region.setFlag(DefaultFlag.CHEST_ACCESS,StateFlag.State.DENY);     
@@ -56,7 +57,6 @@ public class CreatePlot {
 			e.printStackTrace();
 		}
 		
-		// Create tangible outline.
 		FileManager.dataFileCfg.set("regions." + region.getId() + ".price", price);
 		FileManager.saveDataFile();
 
