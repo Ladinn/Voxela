@@ -2,13 +2,7 @@ package com.voxela.plots.plotManagement;
 
 import net.md_5.bungee.api.ChatColor;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
-import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
-import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldedit.bukkit.selections.Selection;
 import com.sk89q.worldguard.protection.managers.storage.StorageException;
@@ -63,21 +57,7 @@ public class CreatePlot {
 		}
 		
 		// Create tangible outline.
-		
-		
-		// Create hologram.
-		Location hologramLoc = player.getEyeLocation().add(0, 1, 0);
-		NamedHologram regionHologram = new NamedHologram(hologramLoc, region.getId());
-		
-		regionHologram.getVisibilityManager().setVisibleByDefault(true);
-		regionHologram.insertItemLine(0, new ItemStack(Material.GOLD_NUGGET));
-		regionHologram.insertTextLine(1, "" + ChatColor.AQUA + ChatColor.BOLD + "For sale: " + ChatColor.RESET + ChatColor.GOLD + "$" + price + " per week.");
-		regionHologram.insertTextLine(2, "" + ChatColor.GRAY + ChatColor.ITALIC + "/plot info " + region.getId());
-
-		HologramDatabase.saveHologram(regionHologram);
-		HologramDatabase.trySaveToDisk();
-		
-		FileManager.dataFileCfg.set("regions." + region.getId() + ".price", + price);
+		FileManager.dataFileCfg.set("regions." + region.getId() + ".price", price);
 		FileManager.saveDataFile();
 
 	}

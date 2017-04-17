@@ -8,7 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.voxela.plots.timeUtils.RentTime;
+import com.voxela.plots.timeUtils.RentCheck;
 import com.voxela.plots.utils.FileManager;
 
 import net.md_5.bungee.api.ChatColor;
@@ -31,7 +31,7 @@ public class Main extends JavaPlugin implements Listener {
 		FileManager.loadFiles();
 		this.getCommand("plot").setExecutor(new PlotCommand(this));
 		setupEconomy();
-		RentTime.checkEveryTenMins();
+		RentCheck.checkEveryTenMins();
 	}
 
 	public void onDisable() {

@@ -6,13 +6,13 @@ import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
 import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.data.DataException;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.voxela.plots.Main;
+import com.voxela.plots.utils.FileManager;
 import com.voxela.plots.utils.WorldEditUtils;
 
 @SuppressWarnings("deprecation")
@@ -36,10 +36,9 @@ public class DeletePlot {
 		RegionManager regionManager = container.get(player.getWorld());
 
 	    regionManager.removeRegion(region.getId());
-	       
-	    // Delete the hologram...
-		HologramDatabase.deleteHologram(region.getId());
-		HologramDatabase.trySaveToDisk();
+	    
+	    FileManager.dataFileCfg.set("regions." + region.getId(), null);
+		FileManager.saveDataFile();
 		
 		long endMillis = System.currentTimeMillis();
 

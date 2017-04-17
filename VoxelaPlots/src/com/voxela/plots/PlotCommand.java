@@ -2,6 +2,7 @@ package com.voxela.plots;
 
 import net.md_5.bungee.api.ChatColor;
 
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,7 +14,8 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.voxela.plots.plotManagement.CreatePlot;
 import com.voxela.plots.plotManagement.DeletePlot;
 import com.voxela.plots.plotManagement.UserPlot;
-import com.voxela.plots.rent.rentCommands;
+import com.voxela.plots.rent.rent;
+import com.voxela.plots.rent.unrent;
 import com.voxela.plots.utils.ChatUtils;
 
 public class PlotCommand implements CommandExecutor  {
@@ -70,7 +72,7 @@ public class PlotCommand implements CommandExecutor  {
 
 						ProtectedRegion region = Main.getWorldGuard().getRegionManager(player.getWorld()).getRegion(args[1]);
 
-						rentCommands.rent(player, region);
+						rent.rentMethod(player, region);
 						return true;
 						
 					}
@@ -167,6 +169,8 @@ public class PlotCommand implements CommandExecutor  {
 							if (region.getMembers().contains(ChatUtils.toUUID(playerToDelete))) {
 								
 								UserPlot.delete(player, playerToDelete, region);
+								player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "Deleted " + ChatColor.GOLD + 
+										playerToDelete + ChatColor.GREEN + " from " + ChatColor.GOLD + region.getId() + "!");
 								return true;
 								
 							} else {
@@ -180,6 +184,38 @@ public class PlotCommand implements CommandExecutor  {
 					
 				}
 				
+				if (args[0].equalsIgnoreCase("unrent")) {
+					
+					if (!(args.length > 1) || args.length > 2) {
+						player.sendMessage(syntaxError);
+						return true;
+					} else {
+
+						ProtectedRegion region = Main.getWorldGuard().getRegionManager(player.getWorld()).getRegion(args[1]);
+						
+						if (region == null) {
+							
+							player.sendMessage(Main.gamePrefix + ChatColor.RED + "Invalid region name!");
+							return true;
+							
+						} else {
+						
+							if (!(region.getOwners().getUniqueIds().toString().contains(player.getUniqueId().toString()))) {
+								
+								player.sendMessage(Main.gamePrefix + ChatColor.RED + "You do not own this plot!");
+								return true;
+								
+							}
+							
+							unrent.unrentMethod(region);
+							player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "You are no longer renting " + ChatColor.GOLD + region.getId() + "!");
+							return true;
+							
+						}
+					
+					}
+					
+				}
 				
 				// Admin commands...
 				
@@ -209,6 +245,36 @@ public class PlotCommand implements CommandExecutor  {
 							}
 							
 							CreatePlot.createPlot(player, price);
+							return true;
+						}
+						
+					} else player.sendMessage(noPerm); return true;
+				}
+				
+				if (args[0].equalsIgnoreCase("restore")) {
+					
+					if (player.isOp() || player.hasPermission(new Permission("voxela.plots.admin"))) {
+						
+						if (!(args.length > 1) || args.length > 2) {
+							player.sendMessage(syntaxError);
+							return true;
+						} else {
+							
+							String regionString = args[1];
+							
+							// If player has not selected a region.
+							if (Main.getWorldGuard().getRegionManager(player.getWorld()).getRegion(regionString) == null) {
+								player.sendMessage(Main.gamePrefix + ChatColor.RED
+										+ "Invalid region!");
+								return true;
+							}
+							
+							World world = Main.getInstance().getServer().getWorld("world");
+							
+							ProtectedRegion region = Main.getWorldGuard().getRegionManager(world).getRegion(regionString);
+							
+							unrent.unrentMethod(region);
+							
 							return true;
 						}
 						
