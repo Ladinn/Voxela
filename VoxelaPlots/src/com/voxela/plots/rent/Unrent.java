@@ -33,6 +33,8 @@ public class Unrent {
 		
 		World world = Bukkit.getWorld("world");
 		
+		WorldEditUtils.saveSelectionPreRestore(world, region);
+		
 		try {
 			WorldEditUtils.restoreRegion(world, region);
 		} catch (DataException | MaxChangedBlocksException | IOException e) {

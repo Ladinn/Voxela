@@ -38,7 +38,7 @@ public class CreatePlot {
 		FileManager.saveDataFile();
 		
 		// Save the region as a schematic.
-		WorldEditUtils.saveSelection(region, world);
+		WorldEditUtils.saveSelection(world, region);
 		
 		// Set the region flags.        
         region.setFlag(DefaultFlag.CHEST_ACCESS,StateFlag.State.DENY);     

@@ -33,6 +33,52 @@ public class TimeManager {
 
 	}
 	
+	public static String timePlusDay() {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd:HH:mm:ss:D");
+		String time = sdf.format(Calendar.getInstance().getTime());
+		String[] timeString = time.split(":");
+		
+		int year = Integer.parseInt(timeString[0]);
+		int month = Integer.parseInt(timeString[1]);
+		int date = Integer.parseInt(timeString[2]);
+		int hour = Integer.parseInt(timeString[3]);
+		int minute = Integer.parseInt(timeString[4]);
+		int second = Integer.parseInt(timeString[5]);
+		int dayInYear = Integer.parseInt(timeString[6]);
+		
+		if (365 < dayInYear + 1) {
+			
+			int nextYear = year +1;
+			int nextMonth = 1;
+			int nextDate = date + 1 - numberOfDaysInMonth(month, year);
+			
+			String timeRaw = Integer.toString(nextYear) + ":" + Integer.toString(nextMonth) + ":" + Integer.toString(nextDate) + ":" + 
+					Integer.toString(hour) + ":" + Integer.toString(minute) + ":" + Integer.toString(second);
+			return timeRaw;
+			
+		}
+		
+		if (numberOfDaysInMonth(month, year) < date + 1) {
+			
+			int nextMonth = month + 1;
+			int nextDate = date + 1 - numberOfDaysInMonth(month, year);
+			
+			String timeRaw = Integer.toString(year) + ":" + Integer.toString(nextMonth) + ":" + Integer.toString(nextDate) + ":" + 
+					Integer.toString(hour) + ":" + Integer.toString(minute) + ":" + Integer.toString(second);
+			return timeRaw;
+			
+		} else {
+			
+			int nextDate = date + 1;
+			
+			String timeRaw = Integer.toString(year) + ":" + Integer.toString(month) + ":" + Integer.toString(nextDate) + ":" + 
+					Integer.toString(hour) + ":" + Integer.toString(minute) + ":" + Integer.toString(second);
+			return timeRaw;
+			
+		}
+	}
+	
 	public static String timePlusWeek() {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd:HH:mm:ss:D");

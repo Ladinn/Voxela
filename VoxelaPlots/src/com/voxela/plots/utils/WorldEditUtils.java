@@ -12,14 +12,13 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.data.DataException;
 import com.sk89q.worldedit.schematic.SchematicFormat;
-import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.voxela.plots.Main;
 
 @SuppressWarnings("deprecation")
 public class WorldEditUtils {
 	
-	public static void saveSelection(ProtectedCuboidRegion region, World world) {
+	public static void saveSelection(World world, ProtectedRegion region) {
 		
 		EditSession es = new EditSession(new BukkitWorld(world),Integer.MAX_VALUE);
 		Vector origin = new Vector(region.getMinimumPoint().getBlockX(), region.getMinimumPoint().getBlockY(), region.getMinimumPoint().getBlockZ());
@@ -29,6 +28,24 @@ public class WorldEditUtils {
 		clipboard.copy(es);
 		
 		File saveFile = new File(Main.getInstance().getDataFolder() + File.separator + "schematics" + File.separator + region.getId() + ".schematic");
+
+		try {
+			SchematicFormat.MCEDIT.save(clipboard, saveFile);
+		} catch (DataException | IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void saveSelectionPreRestore(World world, ProtectedRegion region) {
+		
+		EditSession es = new EditSession(new BukkitWorld(world),Integer.MAX_VALUE);
+		Vector origin = new Vector(region.getMinimumPoint().getBlockX(), region.getMinimumPoint().getBlockY(), region.getMinimumPoint().getBlockZ());
+		Vector size = (new Vector(region.getMaximumPoint().getBlockX(), region.getMaximumPoint().getBlockY(), region.getMaximumPoint().getBlockZ()).subtract(origin)).add(new Vector(1, 1, 1));			
+		CuboidClipboard clipboard = new CuboidClipboard(size, origin);
+		
+		clipboard.copy(es);
+		
+		File saveFile = new File(Main.getInstance().getDataFolder() + File.separator + "schematics" + File.separator + region.getId() + "-RESTORE.schematic");
 
 		try {
 			SchematicFormat.MCEDIT.save(clipboard, saveFile);

@@ -7,6 +7,8 @@ import java.util.Date;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
+
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.voxela.plots.Main;
 import com.voxela.plots.rent.Unrent;
@@ -60,6 +62,14 @@ public class RentCheck {
 			e1.printStackTrace();
 		}
 		
+		Date datePlusDay = null;
+		try {
+			datePlusDay = dateFormat.parse(TimeManager.timePlusDay());
+		} catch (ParseException e1) {
+			System.out.print(Main.consolePrefix + "Error checking rent date! Failed formatting current date.");
+			e1.printStackTrace();
+		}
+		
 		for (String key : FileManager.dataFileCfg.getConfigurationSection("regions").getKeys(false)) {
 			
 			String regionString1 = FileManager.dataFileCfg.getString("regions." + key);
@@ -84,7 +94,7 @@ public class RentCheck {
 				System.out.print(Main.consolePrefix + "Error checking rent date! Failed formatting data file date.");
 				e.printStackTrace();
 			}
-			
+						
 			Main.getInstance();
 			if (dateCurrentDate.after(dateDate)) {
 				
@@ -93,14 +103,40 @@ public class RentCheck {
 					Bukkit.broadcastMessage(Main.gamePrefix + ChatColor.RED + "Resetting " + ChatColor.GOLD + region.getId() + ChatColor.RED + 
 							" owned by " + ChatColor.GOLD + renterString + ChatColor.RED + "!");
 					Unrent.unrentMethod(region);
+					continue;
 					
 				} else {
 					System.out.print(Main.consolePrefix + "Player " + renterString + " has renewed rent for plot " + regionString + ".");
 					Main.getEconomy().withdrawPlayer(renterString, price);
 					FileManager.dataFileCfg.set("regions." + region.getId() + ".rentuntil", TimeManager.timePlusWeek());
 					FileManager.saveDataFile();
+					continue;
 				}				
-			}			
+			}		
+			
+			if (datePlusDay.after(dateDate)) {
+				
+				Player player = Bukkit.getPlayerExact(renterString);
+				
+				if (player == null) {
+					continue;
+				} else {
+					if (Main.getEconomy().getBalance(renterString) < price) {
+						player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "Your rent for plot " + ChatColor.GOLD + region.getId() + ChatColor.GREEN + "is due soon!");
+						System.out.print(Main.consolePrefix + renterString + " does not have enough money to afford " + region.getId());
+					}
+					player.sendMessage(Main.gamePrefix + ChatColor.RED + "You don't have " + ChatColor.GOLD + "$" + price 
+							+ ChatColor.RED + " to pay the rent for " + region.getId());
+					player.sendMessage(Main.gamePrefix + ChatColor.DARK_GRAY + "Your rent is due soon! Make sure you have enough money in your balance to pay the"
+							+ "rent or your plot will be automatically reset.");
+					System.out.print(Main.consolePrefix + renterString + " has enough money to afford " + region.getId());
+					continue;
+				}
+				
+			}
+			
+			System.out.print(Main.consolePrefix + "Checked plot " + region.getId() + " owned by " + renterString);
+			
 		}				
 	}
 
