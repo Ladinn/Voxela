@@ -14,7 +14,3 @@ permissions:
     voxela.plots.admin:
         description: Allows creation and deletion of plots.
         default: op
-        
-        TO DO:
-        - holograms on rent/unrent
-        - greeting on rent/unrent
