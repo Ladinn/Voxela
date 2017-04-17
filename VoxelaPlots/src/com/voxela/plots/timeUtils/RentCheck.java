@@ -9,7 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.voxela.plots.Main;
-import com.voxela.plots.rent.unrent;
+import com.voxela.plots.rent.Unrent;
 import com.voxela.plots.utils.FileManager;
 
 import net.md_5.bungee.api.ChatColor;
@@ -92,7 +92,7 @@ public class RentCheck {
 					
 					Bukkit.broadcastMessage(Main.gamePrefix + ChatColor.RED + "Resetting " + ChatColor.GOLD + region.getId() + ChatColor.RED + 
 							" owned by " + ChatColor.GOLD + renterString + ChatColor.RED + "!");
-					unrent.unrentMethod(region);
+					Unrent.unrentMethod(region);
 					
 				} else {
 					System.out.print(Main.consolePrefix + "Player " + renterString + " has renewed rent for plot " + regionString + ".");

@@ -21,6 +21,10 @@ public class FileManager {
 			schemFolder.mkdirs();
 		}
 		
+		Main.getInstance().getConfig().addDefault("pricevar", 500);
+		Main.getInstance().getConfig().options().copyDefaults(true);
+		Main.getInstance().saveConfig();
+		
 		if (!dataFile.exists()) {
 			try {
 				System.out.print(Main.consolePrefix + "Creating data file...");

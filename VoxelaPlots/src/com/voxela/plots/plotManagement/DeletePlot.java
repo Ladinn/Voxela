@@ -24,8 +24,8 @@ public class DeletePlot {
 		long startMillis = System.currentTimeMillis();
 		
 		try {
-			WorldEditUtils.restoreRegion(player.getWorld(), region);
 			player.sendMessage(Main.gamePrefix + ChatColor.GRAY + "Restoring region to original schematic...");
+			WorldEditUtils.restoreRegion(player.getWorld(), region);
 		} catch (DataException | MaxChangedBlocksException | IOException e) {
 			player.sendMessage(Main.gamePrefix + ChatColor.RED + "Exception while restoring plot schematic!");
 			e.printStackTrace();

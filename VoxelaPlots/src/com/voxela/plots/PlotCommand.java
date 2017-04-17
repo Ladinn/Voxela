@@ -15,8 +15,8 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.voxela.plots.plotManagement.CreatePlot;
 import com.voxela.plots.plotManagement.DeletePlot;
 import com.voxela.plots.plotManagement.UserPlot;
-import com.voxela.plots.rent.rent;
-import com.voxela.plots.rent.unrent;
+import com.voxela.plots.rent.Rent;
+import com.voxela.plots.rent.Unrent;
 import com.voxela.plots.utils.ChatUtils;
 
 public class PlotCommand implements CommandExecutor  {
@@ -73,7 +73,7 @@ public class PlotCommand implements CommandExecutor  {
 
 						ProtectedRegion region = Main.getWorldGuard().getRegionManager(player.getWorld()).getRegion(args[1]);
 
-						rent.rentMethod(player, region);
+						Rent.rentMethod(player, region);
 						return true;
 						
 					}
@@ -208,7 +208,7 @@ public class PlotCommand implements CommandExecutor  {
 								
 							}
 							
-							unrent.unrentMethod(region);
+							Unrent.unrentMethod(region);
 							player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "You are no longer renting " + ChatColor.GOLD + region.getId() + "!");
 							return true;
 							
@@ -229,27 +229,43 @@ public class PlotCommand implements CommandExecutor  {
 							return true;							
 						}
 						
-						if (!(args.length > 2) || args.length > 3) {
+						if (args.length > 2) {
 							player.sendMessage(syntaxError);
-							return true;
-						} else {
-						
-							int price = Integer.parseInt(args[1]);
-							
-							Selection sel = Main.getWorldEdit().getSelection(player);
-							
-							// If player has not selected a region.
-							if (sel == null) {
-								player.sendMessage(Main.gamePrefix + ChatColor.RED
-										+ "You must make a selection first!");
-								return true;
-							}
-							
-							World world = Bukkit.getWorld(args[2]);
-							CreatePlot.createPlot(player, price, world);
 							return true;
 						}
 						
+						Selection sel = Main.getWorldEdit().getSelection(player);
+						
+						// If player has not selected a region.
+						if (sel == null) {
+							player.sendMessage(Main.gamePrefix + ChatColor.RED
+									+ "You must make a selection first!");
+							return true;
+						}
+						
+						if (args.length == 1) {
+							
+							CreatePlot.createPlot(player, player.getWorld());
+							return true;
+						}
+						
+						if (args.length == 2) {
+							
+							if (!(Bukkit.getWorlds().contains(Bukkit.getWorld(args[1])))) {
+								player.sendMessage(Main.gamePrefix + ChatColor.RED + "Unknown world!");
+							} else {
+								
+								World world = Bukkit.getWorld(args[1]);
+								
+								CreatePlot.createPlot(player, world);
+								return true;
+								
+							}
+						}
+						
+						player.sendMessage(Main.gamePrefix + ChatColor.RED + "Unknown error.");
+						return true;
+
 					} else player.sendMessage(noPerm); return true;
 				}
 				
@@ -275,7 +291,7 @@ public class PlotCommand implements CommandExecutor  {
 							
 							ProtectedRegion region = Main.getWorldGuard().getRegionManager(world).getRegion(regionString);
 							
-							unrent.unrentMethod(region);
+							Unrent.unrentMethod(region);
 							
 							return true;
 						}

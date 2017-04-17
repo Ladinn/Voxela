@@ -18,7 +18,7 @@ import com.voxela.plots.utils.WorldEditUtils;
 public class CreatePlot {
 	
 	@SuppressWarnings("deprecation")
-	public static void createPlot(Player player, int price, World world) {
+	public static void createPlot(Player player, World world) {
 		
 		Selection sel = Main.getWorldEdit().getSelection(player);
 		
@@ -46,12 +46,16 @@ public class CreatePlot {
         region.setFlag(DefaultFlag.USE,StateFlag.State.DENY);     
         region.setFlag(DefaultFlag.USE.getRegionGroupFlag(), RegionGroup.NON_MEMBERS);
 		
-		region.setFlag(DefaultFlag.GREET_MESSAGE, Main.gamePrefix + ChatColor.GOLD + "Entering " + region.getId() + "." + ChatColor.RED + " Unowned!");
-		region.setFlag(DefaultFlag.FAREWELL_MESSAGE, Main.gamePrefix + ChatColor.GOLD + "Leaving " + region.getId() + "." + ChatColor.RED + " Unowned!");
+		region.setFlag(DefaultFlag.GREET_MESSAGE, Main.gamePrefix + ChatColor.GOLD + "Entering " + region.getId() + "." + ChatColor.RED + " Unowned! " 
+		+ ChatColor.GRAY + ChatColor.ITALIC + "/plot info " + region.getId());
+		region.setFlag(DefaultFlag.FAREWELL_MESSAGE, Main.gamePrefix + ChatColor.GOLD + "Leaving " + region.getId() + "." + ChatColor.RED + " Unowned! " 
+		+ ChatColor.GRAY + ChatColor.ITALIC + "/plot info " + region.getId());
+		
+		int price = PlotPrice.getPlotPrice(region);
 		
 		try {
 			Main.getWorldGuard().getGlobalRegionManager().get(player.getWorld()).save();
-			player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "Plot created: " + ChatColor.GOLD + region.getId());
+			player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "Plot created: " + ChatColor.GOLD + region.getId() + ". " + ChatColor.GREEN + "Price: " + ChatColor.GOLD + "$" + price + ".");
 		} catch (StorageException e) {
 			player.sendMessage(Main.gamePrefix + ChatColor.RED + "Could not save region:" + region.getId());
 			e.printStackTrace();
