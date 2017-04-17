@@ -98,7 +98,7 @@ public class RentCheck {
 			Main.getInstance();
 			if (dateCurrentDate.after(dateDate)) {
 				
-				if (Main.getEconomy().getBalance(renterString) < price) {
+				if (Main.getEconomy().getBalance(renterString) <= price) {
 					
 					Bukkit.broadcastMessage(Main.gamePrefix + ChatColor.RED + "Resetting " + ChatColor.GOLD + region.getId() + ChatColor.RED + 
 							" owned by " + ChatColor.GOLD + renterString + ChatColor.RED + "!");
@@ -121,21 +121,22 @@ public class RentCheck {
 				if (player == null) {
 					continue;
 				} else {
-					if (Main.getEconomy().getBalance(renterString) < price) {
-						player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "Your rent for plot " + ChatColor.GOLD + region.getId() + ChatColor.GREEN + "is due soon!");
-						System.out.print(Main.consolePrefix + renterString + " does not have enough money to afford " + region.getId());
+					if (Main.getEconomy().getBalance(renterString) >= price) {
+						player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "Your rent for plot " + ChatColor.GOLD + region.getId() + ChatColor.GREEN + " is due soon!");
+						System.out.print(Main.consolePrefix + renterString + " has enough money to afford " + region.getId() + ".");
+					} else {
+						player.sendMessage(Main.gamePrefix + ChatColor.RED + "You don't have " + ChatColor.GOLD + "$" + price 
+								+ ChatColor.RED + " to pay the rent for " + ChatColor.GOLD + region.getId() + "!");
+						player.sendMessage(Main.gamePrefix + ChatColor.GRAY + "Your rent is due soon! Make sure you have enough money in your balance to pay the "
+								+ "rent or your plot will be automatically reset.");
+						System.out.print(Main.consolePrefix + renterString + " does not enough money to afford " + region.getId() + ".");
 					}
-					player.sendMessage(Main.gamePrefix + ChatColor.RED + "You don't have " + ChatColor.GOLD + "$" + price 
-							+ ChatColor.RED + " to pay the rent for " + region.getId());
-					player.sendMessage(Main.gamePrefix + ChatColor.DARK_GRAY + "Your rent is due soon! Make sure you have enough money in your balance to pay the"
-							+ "rent or your plot will be automatically reset.");
-					System.out.print(Main.consolePrefix + renterString + " has enough money to afford " + region.getId());
 					continue;
 				}
 				
 			}
 			
-			System.out.print(Main.consolePrefix + "Checked plot " + region.getId() + " owned by " + renterString);
+			System.out.print(Main.consolePrefix + "Checked plot " + region.getId() + " owned by " + renterString + ".");
 			
 		}				
 	}
