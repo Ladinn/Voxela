@@ -21,7 +21,7 @@ public class FileManager {
 			schemFolder.mkdirs();
 		}
 		
-		Main.getInstance().getConfig().addDefault("pricevar", 500);
+		Main.getInstance().getConfig().addDefault("pricevar", 100);
 		Main.getInstance().getConfig().options().copyDefaults(true);
 		Main.getInstance().saveConfig();
 		

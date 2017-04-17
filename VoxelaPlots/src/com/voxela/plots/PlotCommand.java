@@ -14,6 +14,7 @@ import com.sk89q.worldedit.bukkit.selections.Selection;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.voxela.plots.plotManagement.CreatePlot;
 import com.voxela.plots.plotManagement.DeletePlot;
+import com.voxela.plots.plotManagement.PlotPrice;
 import com.voxela.plots.plotManagement.UserPlot;
 import com.voxela.plots.rent.Rent;
 import com.voxela.plots.rent.Unrent;
@@ -229,7 +230,7 @@ public class PlotCommand implements CommandExecutor  {
 							return true;							
 						}
 						
-						if (args.length > 2) {
+						if (args.length > 3) {
 							player.sendMessage(syntaxError);
 							return true;
 						}
@@ -243,9 +244,11 @@ public class PlotCommand implements CommandExecutor  {
 							return true;
 						}
 						
+						int priceVol = PlotPrice.getPlotPrice(sel);
+						
 						if (args.length == 1) {
 							
-							CreatePlot.createPlot(player, player.getWorld());
+							CreatePlot.createPlot(player, player.getWorld(), priceVol);
 							return true;
 						}
 						
@@ -256,8 +259,24 @@ public class PlotCommand implements CommandExecutor  {
 							} else {
 								
 								World world = Bukkit.getWorld(args[1]);
+ 
+								CreatePlot.createPlot(player, world, priceVol);
+								return true;
 								
-								CreatePlot.createPlot(player, world);
+							}
+						}
+						
+						if (args.length == 3) {
+							
+							if (!(Bukkit.getWorlds().contains(Bukkit.getWorld(args[1])))) {
+								player.sendMessage(Main.gamePrefix + ChatColor.RED + "Unknown world!");
+							} else {
+								
+								int price = Integer.parseInt(args[2]);
+
+								World world = Bukkit.getWorld(args[1]);
+								
+								CreatePlot.createPlot(player, world, price);
 								return true;
 								
 							}

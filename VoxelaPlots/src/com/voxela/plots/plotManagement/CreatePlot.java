@@ -18,7 +18,7 @@ import com.voxela.plots.utils.WorldEditUtils;
 public class CreatePlot {
 	
 	@SuppressWarnings("deprecation")
-	public static void createPlot(Player player, World world) {
+	public static void createPlot(Player player, World world, int price) {
 		
 		Selection sel = Main.getWorldEdit().getSelection(player);
 		
@@ -50,9 +50,7 @@ public class CreatePlot {
 		+ ChatColor.GRAY + ChatColor.ITALIC + "/plot info " + region.getId());
 		region.setFlag(DefaultFlag.FAREWELL_MESSAGE, Main.gamePrefix + ChatColor.GOLD + "Leaving " + region.getId() + "." + ChatColor.RED + " Unowned! " 
 		+ ChatColor.GRAY + ChatColor.ITALIC + "/plot info " + region.getId());
-		
-		int price = PlotPrice.getPlotPrice(region);
-		
+				
 		try {
 			Main.getWorldGuard().getGlobalRegionManager().get(player.getWorld()).save();
 			player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "Plot created: " + ChatColor.GOLD + region.getId() + ". " + ChatColor.GREEN + "Price: " + ChatColor.GOLD + "$" + price + ".");
