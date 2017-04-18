@@ -78,7 +78,9 @@ public class RentCheck {
 			
 			String dateString = FileManager.dataFileCfg.getString("regions." + key + ".rentuntil");
 			String renterString = FileManager.dataFileCfg.getString("regions." + key + ".renter");
-			int price = FileManager.dataFileCfg.getInt("regions." + key + ".price");
+			
+			double weeklyPriceCut = Main.getInstance().getConfig().getDouble("weeklypricecut");
+			int price = (int) (FileManager.dataFileCfg.getInt("regions." + key + ".price") * weeklyPriceCut);
 			
 			if (dateString == null) {
 				continue;				

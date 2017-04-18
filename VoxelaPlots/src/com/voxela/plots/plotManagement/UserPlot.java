@@ -29,6 +29,9 @@ public class UserPlot {
 		int plotPrice = FileManager.dataFileCfg.getInt("regions." + region.getId() + ".price");
 		
 		// If region is owned...
+		double weeklyPriceCut = Main.getInstance().getConfig().getDouble("weeklypricecut");
+		int plotPriceWeekly = (int) (plotPrice * weeklyPriceCut);
+		
 		if ((region.getOwners().getUniqueIds().toString().contains("-") )) {
 		
 			String ownerUUIDs1 = region.getOwners().getUniqueIds().toString();
@@ -61,18 +64,22 @@ public class UserPlot {
 			String rentDue = TimeManager.timeFormatter(FileManager.dataFileCfg.getString("regions." + region.getId() + ".rentuntil"));
 			
 			player.sendMessage(ChatColor.DARK_AQUA + "Region: " + ChatColor.GRAY + region.getId());
-			player.sendMessage(ChatColor.DARK_AQUA + "Price: " + ChatColor.GRAY + "$" + plotPrice + "/week");
+			player.sendMessage(ChatColor.DARK_AQUA + "Price: " + ChatColor.GRAY + "$" + plotPriceWeekly + "/week");
 			player.sendMessage(ChatColor.DARK_AQUA + "Rent Due: " + ChatColor.GRAY + rentDue);
 			player.sendMessage(ChatColor.DARK_AQUA + "Owner: " + ChatColor.GRAY + ownerName);
 			player.sendMessage(ChatColor.DARK_AQUA + "Members: " + ChatColor.GRAY + memberName);
 			return;
 			
 		} else {
-			
+						
 			player.sendMessage(ChatColor.DARK_AQUA + "Region: " + ChatColor.GRAY + region.getId());
-			player.sendMessage(ChatColor.DARK_AQUA + "Price: " + ChatColor.GRAY + "$" + plotPrice + "/week");
+			player.sendMessage(ChatColor.DARK_AQUA + "Price: " + ChatColor.GRAY + "$" + plotPrice);
 			player.sendMessage("");
 			ChatUtils.sendCenteredMessage(player, ChatColor.GREEN + "This plot is for sale! Type" + ChatColor.GOLD + " /plot rent " + region.getId() + ChatColor.GREEN + " to rent it.");
+			player.sendMessage(ChatUtils.divider);
+			ChatUtils.sendCenteredMessage(player, ChatColor.GRAY + "You will automatically be charged " + ChatColor.DARK_AQUA + "$" + plotPrice + ChatColor.GRAY + " when you");
+			ChatUtils.sendCenteredMessage(player, ChatColor.GRAY +  "first rent the plot and " + ChatColor.DARK_AQUA + "$" + (int) plotPriceWeekly + ChatColor.GRAY + " every week.");
+			player.sendMessage(ChatUtils.divider);
 			return;
 		}
 		

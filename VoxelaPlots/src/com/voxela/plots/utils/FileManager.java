@@ -22,6 +22,7 @@ public class FileManager {
 		}
 		
 		Main.getInstance().getConfig().addDefault("pricevar", 100);
+		Main.getInstance().getConfig().addDefault("weeklypricecut", 0.75);
 		Main.getInstance().getConfig().options().copyDefaults(true);
 		Main.getInstance().saveConfig();
 		
