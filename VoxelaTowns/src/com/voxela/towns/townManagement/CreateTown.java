@@ -47,9 +47,9 @@ public class CreateTown {
         region.setFlag(DefaultFlag.USE.getRegionGroupFlag(), RegionGroup.NON_MEMBERS);
 		
 		region.setFlag(DefaultFlag.GREET_MESSAGE, Main.gamePrefix + ChatColor.GOLD + "Entering unowned town! " 
-		+ ChatColor.GRAY + "$" + price + " per week." + ChatColor.DARK_GRAY + " - " + region.getId());
+		+ ChatColor.GRAY + "$" + price + ChatColor.DARK_GRAY + " - " + region.getId());
 		region.setFlag(DefaultFlag.FAREWELL_MESSAGE, Main.gamePrefix + ChatColor.GOLD + "Leaving unowned town! " 
-		+ ChatColor.GRAY + "$" + price + " per week." + ChatColor.DARK_GRAY + " - " + region.getId());
+		+ ChatColor.GRAY + "$" + price + ChatColor.DARK_GRAY + " - " + region.getId());
 				
 		try {
 			Main.getWorldGuard().getGlobalRegionManager().get(player.getWorld()).save();

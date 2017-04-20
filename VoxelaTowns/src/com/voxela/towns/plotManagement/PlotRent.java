@@ -2,6 +2,8 @@ package com.voxela.towns.plotManagement;
 
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.sk89q.worldguard.domains.DefaultDomain;
@@ -35,7 +37,10 @@ public class PlotRent {
 		
 		if (Main.getEconomy().getBalance(player.getName()) >= plotPrice) {
 			
+			OfflinePlayer account = Bukkit.getOfflinePlayer("town-" + town);
+			
 			Main.getEconomy().withdrawPlayer(player, plotPrice);
+			Main.getEconomy().depositPlayer(account, plotPrice);
 			
 			FileManager.dataFileCfg.set("regions." + townRegion.getId() + ".plots." + plotRegion.getId() + ".renter", player.getName());
 			FileManager.dataFileCfg.set("regions." + townRegion.getId() + ".plots." + plotRegion.getId() + ".rentuntil", TimeManager.timePlusWeek());

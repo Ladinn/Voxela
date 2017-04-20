@@ -28,9 +28,9 @@ public class TownUnrent {
 		int price = FileManager.dataFileCfg.getInt("regions." + region.getId() + ".price");
 		
 		region.setFlag(DefaultFlag.GREET_MESSAGE, Main.gamePrefix + ChatColor.GOLD + "Entering unowned town! " 
-		+ ChatColor.GRAY + "$" + price + " per week." + ChatColor.DARK_GRAY + " - " + region.getId());
+		+ ChatColor.GRAY + "$" + price + ChatColor.DARK_GRAY + " - " + region.getId());
 		region.setFlag(DefaultFlag.FAREWELL_MESSAGE, Main.gamePrefix + ChatColor.GOLD + "Leaving unowned town! " 
-		+ ChatColor.GRAY + "$" + price + " per week." + ChatColor.DARK_GRAY + " - " + region.getId());
+		+ ChatColor.GRAY + "$" + price + ChatColor.DARK_GRAY + " - " + region.getId());
 
 		region.getOwners().clear();
 		region.getMembers().clear();

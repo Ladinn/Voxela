@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -13,6 +14,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.voxela.towns.Main;
 import com.voxela.towns.mayor.TownUnrent;
 import com.voxela.towns.plotManagement.PlotRent;
+import com.voxela.towns.utils.ChatUtils;
 import com.voxela.towns.utils.FileManager;
 
 import net.md_5.bungee.api.ChatColor;
@@ -79,7 +81,10 @@ public class RentCheck {
 			String regionString = regionString2.replace("', root='YamlConfiguration']", "");
 			
 			String dateString = FileManager.dataFileCfg.getString("regions." + key + ".rentuntil");
-			String renterString = FileManager.dataFileCfg.getString("regions." + key + ".renter");
+			String renterString = ChatUtils.fromUUID(FileManager.dataFileCfg.getString("regions." + key + ".mayor"));
+			String town = FileManager.dataFileCfg.getString("regions." + key + ".name");
+			
+			OfflinePlayer account = Bukkit.getOfflinePlayer("town-" + town);
 			
 			double weeklyPriceCut = Main.getInstance().getConfig().getDouble("weeklypricecut");
 			int price = (int) (FileManager.dataFileCfg.getInt("regions." + key + ".price") * weeklyPriceCut);
@@ -111,7 +116,7 @@ public class RentCheck {
 					
 				} else {
 					System.out.print(Main.consolePrefix + "Player " + renterString + " has renewed rent for the town " + regionString + ".");
-					Main.getEconomy().withdrawPlayer(renterString, price);
+					Main.getEconomy().withdrawPlayer(account, price);
 					FileManager.dataFileCfg.set("regions." + region.getId() + ".rentuntil", TimeManager.timePlusWeek());
 					FileManager.saveDataFile();
 					continue;
@@ -175,7 +180,10 @@ public class RentCheck {
 			String townRegionString1 = FileManager.dataFileCfg.getString("regions." + townKey);
 			String townRegionString2 = townRegionString1.replace("MemorySection[path='regions.", "");
 			String townRegionString = townRegionString2.replace("', root='YamlConfiguration']", "");
-			ProtectedRegion townRegion = Main.getWorldGuard().getRegionManager(world).getRegion(townRegionString);			
+			ProtectedRegion townRegion = Main.getWorldGuard().getRegionManager(world).getRegion(townRegionString);
+			String town = FileManager.dataFileCfg.getString("regions." + townKey + ".name");
+			
+			OfflinePlayer account = Bukkit.getOfflinePlayer("town-" + town);
 			
 			for (String plotKey : FileManager.dataFileCfg.getConfigurationSection("regions." + townKey + ".plots").getKeys(false)) {
 				
@@ -214,6 +222,7 @@ public class RentCheck {
 					} else {
 						System.out.print(Main.consolePrefix + "Player " + renterString + " has renewed rent for plot " + townRegionString + plotRegionString + ".");
 						Main.getEconomy().withdrawPlayer(renterString, price);
+						Main.getEconomy().depositPlayer(account, price);
 						FileManager.dataFileCfg.set("regions." + townKey + ".plots." + plotKey + ".rentuntil", TimeManager.timePlusWeek());
 						FileManager.saveDataFile();
 						continue;
