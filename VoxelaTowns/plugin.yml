@@ -1,0 +1,16 @@
+name: VoxelaTowns
+main: com.voxela.towns.Main
+version: 1.0
+depend: [WorldEdit, WorldGuard, Vault]
+commands:
+    town:
+        description: Voxela Towns main command.
+        usage: /<command>
+permissions:
+    voxela.town.*:
+        description: Access to all Voxela Towns commands.
+        children:
+            voxela.town.admin: true
+    voxela.town.admin:
+        description: Allows creation and deletion of towns.
+        default: op
