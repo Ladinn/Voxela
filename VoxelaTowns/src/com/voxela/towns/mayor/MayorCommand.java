@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.sk89q.worldedit.BlockVector;
@@ -220,9 +221,11 @@ public class MayorCommand {
 	@SuppressWarnings("deprecation")
 	public static void deposit(String town, Player player, int amount) {
 		
+		OfflinePlayer account = Bukkit.getOfflinePlayer("town-" + town);
+		
 		if (Main.getEconomy().getBalance(player.getName()) >= amount) {
 
-			Main.getEconomy().depositPlayer("town-" + town, amount);
+			Main.getEconomy().depositPlayer(account, amount);
 			Main.getEconomy().withdrawPlayer(player.getName(), amount);
 			player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "Deposited " + ChatColor.GOLD + "$" + amount + ChatColor.GREEN + " into town bank.");
 			return;
@@ -236,10 +239,12 @@ public class MayorCommand {
 	@SuppressWarnings("deprecation")
 	public static void withdraw(String town, Player player, int amount) {
 		
+		OfflinePlayer account = Bukkit.getOfflinePlayer("town-" + town);
+		
 		if (Main.getEconomy().getBalance("town-" + town) >= amount) {
 
-			Main.getEconomy().depositPlayer("town-" + town, amount);
-			Main.getEconomy().withdrawPlayer("town-" + town, amount);
+			Main.getEconomy().depositPlayer(player, amount);
+			Main.getEconomy().withdrawPlayer(account, amount);
 			player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "Withdrew " + ChatColor.GOLD + "$" + amount + ChatColor.GREEN + " from town bank.");
 			return;
 		}

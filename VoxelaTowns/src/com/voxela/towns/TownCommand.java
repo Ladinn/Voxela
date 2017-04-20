@@ -347,7 +347,7 @@ public class TownCommand implements CommandExecutor {
 						return true;
 					}
 					
-					if (args.length == 1) {
+					if (args.length == 1 || args.length == 2) {
 						
 						MayorCommand.mayorHelp(player);
 						return true;
@@ -527,7 +527,7 @@ public class TownCommand implements CommandExecutor {
 
 						if (args[2].equalsIgnoreCase("deposit")) {
 							
-							if (!(args.length == 3)) {
+							if (!(args.length == 4)) {
 								player.sendMessage(syntaxError);
 								return true;
 							}
@@ -539,7 +539,7 @@ public class TownCommand implements CommandExecutor {
 							
 							int amount = Integer.parseInt(args[3]);
 							
-							MayorCommand.deposit(mayor, player, amount);
+							MayorCommand.deposit(town, player, amount);
 							return true;
 						}
 
@@ -547,7 +547,7 @@ public class TownCommand implements CommandExecutor {
 
 							if (MayorCheck.isMayor(region, player)) {
 								
-								if (!(args.length == 3)) {
+								if (!(args.length == 4)) {
 									player.sendMessage(syntaxError);
 									return true;
 								}
@@ -559,7 +559,7 @@ public class TownCommand implements CommandExecutor {
 								
 								int amount = Integer.parseInt(args[3]);
 								
-								MayorCommand.withdraw(mayor, player, amount);
+								MayorCommand.withdraw(town, player, amount);
 								return true;
 							}
 							player.sendMessage(Main.gamePrefix + ChatColor.RED + "Only the town mayor can do this!");
