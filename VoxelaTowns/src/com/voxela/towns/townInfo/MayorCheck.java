@@ -22,7 +22,7 @@ public class MayorCheck {
 	public static boolean isMayorOrDeputy(ProtectedRegion region, Player player) {
 		
 		String mayor = FileManager.dataFileCfg.getString("regions." + region.getId() + ".mayor");
-		String deputy = FileManager.dataFileCfg.getString("regions." + region.getId() + ".deputy");
+		String deputy = FileManager.dataFileCfg.getString("regions." + region.getId() + ".deputies");
 		
 		if (mayor.contains(player.getUniqueId().toString()) || deputy.contains(player.getUniqueId().toString())) {
 			return true;
@@ -31,7 +31,7 @@ public class MayorCheck {
 	
 	public static boolean isDeputy(ProtectedRegion region, String player) {
 		
-		String deputy = FileManager.dataFileCfg.getString("regions." + region.getId() + ".deputy");
+		String deputy = FileManager.dataFileCfg.getString("regions." + region.getId() + ".deputies");
 		
 		if (deputy.contains(player)) {
 			return true;

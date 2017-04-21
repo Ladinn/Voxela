@@ -17,7 +17,7 @@ public class InfoTown {
 	public static void infoTown(Player player, ProtectedRegion region, String town) {
 		
 		String members = GetMembers.getResidents(town, region);
-		String deputies = GetMembers.getResidents(town, region);
+		String deputies = GetMembers.getDeputies(town, region);
 		String mayor = MayorCheck.getMayor(region);
 		double weeklyPriceCut = Main.getInstance().getConfig().getDouble("weeklypricecut");
 		int price = (int) (FileManager.dataFileCfg.getInt("regions." + region.getId() + ".price") * weeklyPriceCut);

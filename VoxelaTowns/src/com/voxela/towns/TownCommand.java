@@ -476,7 +476,7 @@ public class TownCommand implements CommandExecutor {
 
 						if (args[2].equalsIgnoreCase("add")) {
 							
-							if (!(args.length == 3)) {
+							if (!(args.length == 4)) {
 								player.sendMessage(syntaxError);
 								return true;
 							}
@@ -500,10 +500,28 @@ public class TownCommand implements CommandExecutor {
 								return true;
 							}
 						}
+						
+						if (args[2].equalsIgnoreCase("setname")) {
+
+							if (MayorCheck.isMayor(region, player)) {
+								
+								if (!(args.length == 4)) {
+									player.sendMessage(syntaxError);
+									return true;
+								}
+								
+								String newName = args[3];
+								
+								MayorCommand.setName(player, region, newName);
+								return true;
+							}
+							player.sendMessage(Main.gamePrefix + ChatColor.RED + "Only the town mayor can do this!");
+							return true;
+						}
 
 						if (args[2].equalsIgnoreCase("kick")) {
 							
-							if (!(args.length == 3)) {
+							if (!(args.length == 4)) {
 								player.sendMessage(syntaxError);
 								return true;
 							}
@@ -570,22 +588,28 @@ public class TownCommand implements CommandExecutor {
 
 							if (MayorCheck.isMayor(region, player)) {
 								
-								if (!(args.length == 4)) {
+								if (!(args.length == 5)) {
 									player.sendMessage(syntaxError);
 									return true;
 								}
 								
 								if (args[3].equalsIgnoreCase("add")) {
 									
-									if (Bukkit.getOnlinePlayers().contains(Bukkit.getPlayerExact(args[3]))) {
+									if (args[4] == player.getName()) {
 										
-										Player deputy = Bukkit.getPlayer(args[3]);
+										player.sendMessage(Main.gamePrefix + ChatColor.RED + "You cannot set yourself as a deputy!");
+										return true;
+									}
+									
+									if (Bukkit.getOnlinePlayers().toString().contains(args[4])) {
+
+										Player deputy = Bukkit.getServer().getPlayer(args[4]);
 
 										MayorCommand.addDeputy(mayor, player, region, deputy);
 										return true;
 										
 									} else {
-										player.sendMessage(Main.gamePrefix + ChatColor.RED + "The player " + ChatColor.GOLD + args[3] + ChatColor.RED + " is not online!");
+										player.sendMessage(Main.gamePrefix + ChatColor.RED + "The player " + ChatColor.GOLD + args[4] + ChatColor.RED + " is not online!");
 										return true;
 									}
 									
@@ -593,7 +617,13 @@ public class TownCommand implements CommandExecutor {
 								
 								if (args[3].equalsIgnoreCase("remove")) {
 									
-									String deputy = args[3];
+									if (args[4] == player.getName()) {
+										
+										player.sendMessage(Main.gamePrefix + ChatColor.RED + "You can't demote yourself!");
+										return true;
+									}
+									
+									String deputy = args[4];
 									
 									if (MayorCheck.isDeputy(region, deputy)) {
 										
@@ -625,6 +655,32 @@ public class TownCommand implements CommandExecutor {
 				}
 
 				// Admin commands...
+				
+				if (args[0].equalsIgnoreCase("name")) {
+
+					if (player.isOp() || player.hasPermission(new Permission("voxela.towns.admin"))) {
+						
+						if (!(args.length == 3)) {
+							player.sendMessage(syntaxError);
+							return true;
+						}
+						
+						if (!(TownInfo.townExists(args[1]))) {
+							
+							player.sendMessage(Main.gamePrefix + ChatColor.RED + "Town does not exist!");
+							return true;
+						}
+						
+						ProtectedRegion region = TownRegionConvert.townToRegion(args[1]);
+						
+						String newName = args[2];
+						
+						MayorCommand.setName(player, region, newName);
+						return true;
+					}
+					player.sendMessage(noPerm);
+					return true;
+				}
 
 				if (args[0].equalsIgnoreCase("create")) {
 

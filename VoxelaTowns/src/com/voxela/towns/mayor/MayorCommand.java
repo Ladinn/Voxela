@@ -46,10 +46,31 @@ public class MayorCommand {
 		player.sendMessage(ChatColor.RED + " (Mayor only)" + ChatColor.DARK_GRAY + " - " + ChatColor.DARK_AQUA + "Withdraw money from your town bank.");
 		player.sendMessage(ChatColor.GOLD + "/town mayor " + ChatColor.GRAY + "[town]" + ChatColor.GOLD + " deputy" + ChatColor.GRAY + " [add/remove] [player]");
 		player.sendMessage(ChatColor.RED + " (Mayor only)" + ChatColor.DARK_GRAY + " - " + ChatColor.DARK_AQUA + "Set whether a town member is a deputy.");
+//		player.sendMessage(ChatColor.GOLD + "/town mayor " + ChatColor.GRAY + "[town]" + ChatColor.GOLD + " set" + ChatColor.GRAY + " mayor [player]");
+//		player.sendMessage(ChatColor.RED + " (Mayor only)" + ChatColor.DARK_GRAY + " - " + ChatColor.DARK_AQUA + "Set a new mayor of your town.");
+		player.sendMessage(ChatColor.GOLD + "/town mayor " + ChatColor.GRAY + "[town]" + ChatColor.GOLD + " setName" + ChatColor.GRAY + " [new name]");
+		player.sendMessage(ChatColor.RED + " (Mayor only)" + ChatColor.DARK_GRAY + " - " + ChatColor.DARK_AQUA + "Change the name of your town.");
 		player.sendMessage("");
 		player.sendMessage(ChatUtils.divider);
 		
 	}
+	
+	public static void setName(Player player, ProtectedRegion region, String newName) {
+		
+		FileManager.dataFileCfg.set("regions." + region.getId() + ".name", newName);
+		FileManager.saveDataFile();
+		
+		region.setFlag(DefaultFlag.GREET_MESSAGE, Main.gamePrefix + ChatColor.AQUA + "Entering town: " + ChatColor.LIGHT_PURPLE + newName + ChatColor.DARK_GRAY + " | " +  ChatColor.AQUA + "Mayor: " + ChatColor.LIGHT_PURPLE + player.getName());
+		region.setFlag(DefaultFlag.FAREWELL_MESSAGE, Main.gamePrefix + ChatColor.AQUA + "Leaving town: " + ChatColor.LIGHT_PURPLE + newName + ChatColor.DARK_GRAY + " | " +  ChatColor.AQUA + "Mayor: " + ChatColor.LIGHT_PURPLE + player.getName());
+		player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "New town name: " + ChatColor.GOLD + newName + "!"); 
+		return;
+		
+	}
+	
+//	public static void setMayor(Player player, String town, ProtectedRegion region, Player newMayor) {
+//		
+//		
+//	}
 	
 	public static void plotHelp(Player player, String town) {
 		
@@ -196,7 +217,7 @@ public class MayorCommand {
 	    FileManager.dataFileCfg.set(key, current);
 	    FileManager.saveDataFile();
 	    
-	    player.sendMessage(Main.gamePrefix + ChatColor.GOLD + playerToAdd.getName() + ChatColor.GREEN + " is no longer a resident.");
+	    player.sendMessage(Main.gamePrefix + ChatColor.GOLD + playerToAdd.getName() + ChatColor.GREEN + " is now a resident!");
 	    playerToAdd.sendMessage(Main.gamePrefix + ChatColor.GREEN + "You have been added to the town " + ChatColor.GOLD + town + ".");
 	    return;
 	}
@@ -264,7 +285,7 @@ public class MayorCommand {
 	    current.add(deputy.getUniqueId().toString());
 	    FileManager.dataFileCfg.set(key, current);
 	    
-		UUID playerUUID = ChatUtils.toUUID(player.getName());
+		UUID playerUUID = ChatUtils.toUUID(deputy.getName());
 	    
 		DefaultDomain domain = region.getMembers();
 		domain.addPlayer(playerUUID);
@@ -272,7 +293,7 @@ public class MayorCommand {
 	    
 	    FileManager.saveDataFile();
 	    
-	    player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "Promoted " + ChatColor.GOLD + deputy + ChatColor.GREEN + " to deputy!");
+	    player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "Promoted " + ChatColor.GOLD + deputy.getName() + ChatColor.GREEN + " to deputy!");
 	    return;
 	    
 	}
