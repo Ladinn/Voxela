@@ -48,11 +48,20 @@ public class WorldEditUtils {
 		
 		File saveFile = new File(Main.getInstance().getDataFolder() + File.separator + "schematics" + File.separator + region.getId() + "-RESTORE.schematic");
 
-		try {
-			SchematicFormat.MCEDIT.save(clipboard, saveFile);
-		} catch (DataException | IOException ex) {
-			ex.printStackTrace();
-		}
+		Bukkit.getScheduler().runTaskAsynchronously(
+				Main.getInstance(), new Runnable() {
+			
+				@Override
+				public void run() {
+					
+					try {
+						SchematicFormat.MCEDIT.save(clipboard, saveFile);
+					} catch (DataException | IOException ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+		);
 	}
 	
 	public static void restoreRegion(World world, ProtectedRegion region) throws DataException, IOException, MaxChangedBlocksException {
