@@ -80,7 +80,7 @@ public class MayorCommand {
 		player.sendMessage(ChatColor.GOLD + "/town mayor " + town + " plot list");
 		player.sendMessage(" " + ChatColor.DARK_GRAY + " - " + ChatColor.DARK_AQUA + "List all of the plots in your town.");
 		player.sendMessage(ChatColor.GOLD + "/town mayor " + town + " plot create " + ChatColor.GRAY + "[name] [price]");
-		player.sendMessage(" " + ChatColor.DARK_GRAY + " - " + ChatColor.DARK_AQUA + "Creates a plot within the selection. Use a wooden pickaxe.");
+		player.sendMessage(" " + ChatColor.DARK_GRAY + " - " + ChatColor.DARK_AQUA + "Creates a plot within the selection. Use a blazerod.");
 		player.sendMessage(ChatColor.GOLD + "/town mayor " + town + " plot delete " + ChatColor.GRAY + "[plot region]");
 		player.sendMessage(" " + ChatColor.DARK_GRAY + " - " + ChatColor.DARK_AQUA + "Deletes an existing town plot.");
 		player.sendMessage(ChatColor.GOLD + "/town mayor " + town + " plot price " + ChatColor.GRAY + "[plot region] [price]");

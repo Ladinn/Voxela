@@ -3,6 +3,7 @@ package com.voxela.plots.utils;
 import java.io.File;
 import java.io.IOException;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 import com.sk89q.worldedit.CuboidClipboard;
@@ -60,14 +61,22 @@ public class WorldEditUtils {
 		Vector origin = new Vector(region.getMinimumPoint().getBlockX(), region.getMinimumPoint().getBlockY(), region.getMinimumPoint().getBlockZ());
 		File regionSchem = new File(Main.getInstance().getDataFolder() + File.separator + "schematics" + File.separator + region.getId() + ".schematic");
 		
-		try {
-			CuboidClipboard cc = CuboidClipboard.loadSchematic(regionSchem);
-			cc.paste(es, origin, false);
-			System.out.print(Main.consolePrefix + "Pasted schematic for region " + region.getId());
-		} catch (com.sk89q.worldedit.world.DataException e) {
-			System.out.print(Main.consolePrefix + "DataException while loading schematic!");
-			e.printStackTrace();
-		}		
-	}
-	
+		Bukkit.getScheduler().runTaskAsynchronously(
+				Main.getInstance(), new Runnable() {
+			
+				@Override
+				public void run() {
+					
+					try {
+						CuboidClipboard cc = CuboidClipboard.loadSchematic(regionSchem);
+						cc.paste(es, origin, false);
+						System.out.print(Main.consolePrefix + "Pasted schematic for region " + region.getId());
+					} catch (com.sk89q.worldedit.world.DataException | IOException | MaxChangedBlocksException e) {
+						System.out.print(Main.consolePrefix + "DataException while loading schematic!");
+						e.printStackTrace();
+					}		
+				}
+			}
+		);
+	}	
 }
