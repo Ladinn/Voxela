@@ -29,15 +29,6 @@ public class MayorCheck {
 		} else return false;	
 	}
 	
-	public static boolean isDeputy(ProtectedRegion region, String player) {
-		
-		String deputy = FileManager.dataFileCfg.getString("regions." + region.getId() + ".deputies");
-		
-		if (deputy.contains(player)) {
-			return true;
-		} else return false;	
-	}
-	
 	public static String getMayor(ProtectedRegion region) {
 		
 		String mayor = ChatUtils.fromUUID(FileManager.dataFileCfg.getString("regions." + region.getId() + ".mayor"));

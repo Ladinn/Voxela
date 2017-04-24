@@ -625,7 +625,7 @@ public class TownCommand implements CommandExecutor {
 									
 									String deputy = args[4];
 									
-									if (MayorCheck.isDeputy(region, deputy)) {
+									if (GetMembers.getDeputies(town, region).contains(args[4])) {
 										
 										MayorCommand.removeDeputy(town, player, region, deputy);
 										return true;

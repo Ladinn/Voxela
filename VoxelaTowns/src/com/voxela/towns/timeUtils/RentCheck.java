@@ -107,7 +107,7 @@ public class RentCheck {
 			Main.getInstance();
 			if (dateCurrentDate.after(dateDate)) {
 				
-				if (Main.getEconomy().getBalance(renterString) <= price) {
+				if (Main.getEconomy().getBalance(account) <= price) {
 					
 					Bukkit.broadcastMessage(Main.gamePrefix + ChatColor.RED + "Resetting " + ChatColor.GOLD + region.getId() + ChatColor.RED + 
 							" owned by " + ChatColor.GOLD + renterString + ChatColor.RED + "!");

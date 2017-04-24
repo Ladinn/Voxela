@@ -22,6 +22,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion.CircularInheritanceException;
 import com.voxela.towns.Main;
 import com.voxela.towns.townInfo.GetChildren;
+import com.voxela.towns.townInfo.MayorCheck;
 import com.voxela.towns.utils.ChatUtils;
 import com.voxela.towns.utils.FileManager;
 
@@ -55,13 +56,24 @@ public class MayorCommand {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void setName(Player player, ProtectedRegion region, String newName) {
 		
+		String mayor = MayorCheck.getMayor(region);
+		String town = FileManager.dataFileCfg.getString("regions." + region.getId() + ".name");
+
 		FileManager.dataFileCfg.set("regions." + region.getId() + ".name", newName);
 		FileManager.saveDataFile();
 		
-		region.setFlag(DefaultFlag.GREET_MESSAGE, Main.gamePrefix + ChatColor.AQUA + "Entering town: " + ChatColor.LIGHT_PURPLE + newName + ChatColor.DARK_GRAY + " | " +  ChatColor.AQUA + "Mayor: " + ChatColor.LIGHT_PURPLE + player.getName());
-		region.setFlag(DefaultFlag.FAREWELL_MESSAGE, Main.gamePrefix + ChatColor.AQUA + "Leaving town: " + ChatColor.LIGHT_PURPLE + newName + ChatColor.DARK_GRAY + " | " +  ChatColor.AQUA + "Mayor: " + ChatColor.LIGHT_PURPLE + player.getName());
+		OfflinePlayer oldAccount = Bukkit.getOfflinePlayer("town-" + town);
+		OfflinePlayer newAccount = Bukkit.getOfflinePlayer("town-" + newName);
+		double bal = Main.getEconomy().getBalance(oldAccount);
+		
+		Main.getEconomy().depositPlayer(newAccount, bal);
+		Main.getEconomy().withdrawPlayer(oldAccount, bal);
+		
+		region.setFlag(DefaultFlag.GREET_MESSAGE, Main.gamePrefix + ChatColor.AQUA + "Entering town: " + ChatColor.LIGHT_PURPLE + newName + ChatColor.DARK_GRAY + " | " +  ChatColor.AQUA + "Mayor: " + ChatColor.LIGHT_PURPLE + mayor);
+		region.setFlag(DefaultFlag.FAREWELL_MESSAGE, Main.gamePrefix + ChatColor.AQUA + "Leaving town: " + ChatColor.LIGHT_PURPLE + newName + ChatColor.DARK_GRAY + " | " +  ChatColor.AQUA + "Mayor: " + ChatColor.LIGHT_PURPLE + mayor);
 		player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "New town name: " + ChatColor.GOLD + newName + "!"); 
 		return;
 		
