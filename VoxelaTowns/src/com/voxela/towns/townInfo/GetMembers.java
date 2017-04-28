@@ -42,6 +42,7 @@ public class GetMembers {
             for(int i=0; i < deputyArray.length; i++){
             	deputyName += ChatUtils.fromUUID(deputyArray[i]) + ", ";
             }
+
             return deputyName;
 		}
             

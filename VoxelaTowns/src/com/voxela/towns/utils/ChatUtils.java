@@ -31,10 +31,12 @@ public class ChatUtils {
 			  if(player.getUniqueId().toString().equals(uuidString)) {
 				  foundPlayer = player.getName();
 				  break;
-			  } else {
-				  UUID uuid = UUID.fromString(uuidString);
-				  foundPlayer = Main.getInstance().getServer().getOfflinePlayer(uuid).getName();
 			  }
+		}
+		
+		if (foundPlayer == null) {
+			  UUID uuid = UUID.fromString(uuidString);
+			  foundPlayer = Main.getInstance().getServer().getOfflinePlayer(uuid).getName();			
 		}
 		
 		return foundPlayer;			
@@ -46,11 +48,9 @@ public class ChatUtils {
 		for (Player player : Main.getInstance().getServer().getOnlinePlayers()) {
 			  if(player.getUniqueId().toString().equals(playerToGet)) {
 				  return Main.getInstance().getServer().getPlayer(playerToGet).getUniqueId();
-			  } else {
-				  return Main.getInstance().getServer().getOfflinePlayer(playerToGet).getUniqueId();
 			  }
 		}
-		return null;
+		return Main.getInstance().getServer().getOfflinePlayer(playerToGet).getUniqueId();
 	}
 	 
 	public static void sendCenteredMessage (Player player, String message){

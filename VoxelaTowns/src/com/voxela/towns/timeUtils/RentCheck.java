@@ -130,15 +130,15 @@ public class RentCheck {
 				if (player == null) {
 					continue;
 				} else {
-					if (Main.getEconomy().getBalance(renterString) >= price) {
+					if (Main.getEconomy().getBalance(account) >= price) {
 						player.sendMessage(Main.gamePrefix + ChatColor.GREEN + "Your rent for the town " + ChatColor.GOLD + region.getId() + ChatColor.GREEN + " is due soon!");
-						System.out.print(Main.consolePrefix + renterString + " has enough money to afford " + region.getId() + ".");
+						System.out.print(Main.consolePrefix + town + " has enough money to afford " + region.getId() + ".");
 					} else {
 						player.sendMessage(Main.gamePrefix + ChatColor.RED + "You don't have " + ChatColor.GOLD + "$" + price 
 								+ ChatColor.RED + " to pay the rent for " + ChatColor.GOLD + region.getId() + "!");
 						player.sendMessage(Main.gamePrefix + ChatColor.GRAY + "Your rent is due soon! Make sure you have enough money in your town balance to pay the "
 								+ "rent or your town will be automatically reset.");
-						System.out.print(Main.consolePrefix + renterString + " does not enough money to afford " + region.getId() + ".");
+						System.out.print(Main.consolePrefix + town + " does not enough money to afford " + region.getId() + ".");
 					}
 					continue;
 				}
