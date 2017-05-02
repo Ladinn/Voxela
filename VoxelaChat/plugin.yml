@@ -1,0 +1,8 @@
+name: VoxelaChat
+main: com.voxela.chat.Main
+version: 1.0
+depend: [VoxelaGov, VoxelaTowns, Vault]
+commands:
+    g:
+        description: Speak in global chat.
+        usage: /<command>
