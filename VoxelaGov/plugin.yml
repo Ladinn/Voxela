@@ -1,0 +1,17 @@
+name: VoxelaGov
+main: com.voxela.gov.Main
+version: 1.0
+depend: [WorldEdit, WorldGuard, Vault, TitleAPI, WGRegionEvents]
+commands:
+    gov:
+        description: Voxela Government main command.
+        usage: /<command>
+    pm:
+        description: Prime Minister console.
+        usage: /<command>
+    run:
+        description: Run for Prime Minister.
+        usage: /<command>
+    vote:
+        description: Vote for Prime Minister.
+        usage: /<command>
