@@ -1,0 +1,11 @@
+name: PasswordGenerator
+main: com.voxela.password.Main
+version: 1.0
+depend: [WorldEdit, WorldGuard, Vault]
+commands:
+    password:
+        description: Main command.
+        usage: /<command>
+permissions:
+    voxela.password:
+        description: Allows access to plugin commands.
