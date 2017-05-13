@@ -1,0 +1,8 @@
+name: Lockpick
+main: com.voxela.lockpick.Main
+version: 1.0
+depend: [WorldEdit, WorldGuard]
+commands:
+    lockpick:
+        description: Main command.
+        usage: /<command>
