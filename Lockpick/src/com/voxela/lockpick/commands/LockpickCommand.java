@@ -31,8 +31,7 @@ public class LockpickCommand implements CommandExecutor {
 		if (cmd.getName().equalsIgnoreCase("lockpick")) {
 			
 			player.sendMessage(Main.gamePrefix + ChatColor.GOLD + "Lockpick" + ChatColor.DARK_GRAY + " | " + ChatColor.GRAY + "Version 1.0");
-			player.sendMessage(ChatColor.DARK_GRAY + "  - " + ChatColor.GRAY + "Crafting recipe: ");
-			player.sendMessage(ChatColor.DARK_GRAY + "  - " + ChatColor.DARK_AQUA + "http://voxe.la/files/images/Lockpick/lockpick.png");
+			player.sendMessage(ChatColor.DARK_GRAY + "  - " + ChatColor.GRAY + "Crafting recipe: " + ChatColor.DARK_AQUA + "http://voxe.la/lockpick");
 			return true;
 		}
 		

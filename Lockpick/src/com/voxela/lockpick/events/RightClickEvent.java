@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permission;
 
 import com.voxela.lockpick.Main;
 import com.voxela.lockpick.items.LockpickItem;
@@ -83,6 +84,16 @@ public class RightClickEvent implements Listener {
 					
 					if (!(player.isSneaking())) {
 						player.sendMessage(Main.gamePrefix + ChatColor.RED + "You must be crouching to use this.");
+						return;
+					}
+					
+					if ( mat.toString().toLowerCase().contains("door") && !player.hasPermission(new Permission("voxela.lockpick.door")) ) {
+						player.sendMessage(Main.gamePrefix + ChatColor.RED + "You do not have permission to lockpick doors.");
+						return;
+					}
+					
+					if ( (mat.toString().toLowerCase().contains("chest") || mat.toString().toLowerCase().contains("box")) && !player.hasPermission(new Permission("voxela.lockpick.chest")) ) {
+						player.sendMessage(Main.gamePrefix + ChatColor.RED + "You do not have permission to lockpick chests.");
 						return;
 					}
 					

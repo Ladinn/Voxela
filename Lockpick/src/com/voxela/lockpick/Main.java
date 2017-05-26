@@ -9,13 +9,14 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.voxela.lockpick.commands.LockpickCommand;
 import com.voxela.lockpick.events.RightClickEvent;
 import com.voxela.lockpick.items.LockpickItem;
+import com.voxela.lockpick.metrics.Metrics;
 
 import net.md_5.bungee.api.ChatColor;
 
 public class Main extends JavaPlugin {
 	
 	private static Main instance;
-	
+	private static Metrics metrics;
 	public static String consolePrefix = "[Voxela] ";
 	public static String gamePrefix = ChatColor.DARK_GRAY + "[" + ChatColor.AQUA + "Voxela" + ChatColor.DARK_GRAY + "] ";
 	
@@ -23,6 +24,7 @@ public class Main extends JavaPlugin {
 	public void onEnable() {
 		
 		instance = this;
+		metrics = new Metrics(this);
 		
 		System.out.print(consolePrefix + "Lockpick has been enabled.");
 		
@@ -37,6 +39,10 @@ public class Main extends JavaPlugin {
 	
 	public static Main getInstance() {
 		return instance;
+	}
+	
+	public static Metrics getMetrics() {
+		return metrics;
 	}
 	
 	public static WorldGuardPlugin getWorldGuard() {

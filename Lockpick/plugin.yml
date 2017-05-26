@@ -1,8 +1,20 @@
 name: Lockpick
 main: com.voxela.lockpick.Main
-version: 1.0
+version: 1.1
 depend: [WorldEdit, WorldGuard]
 commands:
     lockpick:
         description: Main command.
         usage: /<command>
+permissions:
+   voxela.lockpick.*:
+     description: Gives access to all permissions.
+     children:
+       voxela.lockpick.door: true
+       voxela.lockpick.chest: true
+   voxela.lockpick.door:
+     description: Allows the player to lockpick a door.
+     default: false
+   voxela.lockpick.chest:
+     description: Allows the player to lockpick a chest.
+     default: false

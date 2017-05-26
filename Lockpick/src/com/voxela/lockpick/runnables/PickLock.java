@@ -148,9 +148,7 @@ public class PickLock {
 	private static void failure(Player player, ItemStack item) {
 		
 		UserMap.setNotLockpicking(player);
-		
 		player.sendMessage(Main.gamePrefix + ChatColor.RED + "Lock picking failed!");
-		
 		removeLockpick(player, item);
 		
 	}
