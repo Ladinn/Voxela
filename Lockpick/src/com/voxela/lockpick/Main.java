@@ -1,5 +1,7 @@
 package com.voxela.lockpick;
 
+import java.io.File;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -10,6 +12,7 @@ import com.voxela.lockpick.commands.LockpickCommand;
 import com.voxela.lockpick.events.RightClickEvent;
 import com.voxela.lockpick.items.LockpickItem;
 import com.voxela.lockpick.metrics.Metrics;
+import com.voxela.lockpick.utils.HttpUtil;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -23,14 +26,19 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		
+		loadFiles();
+		loadMsg();
+		updateCheck();
+		
 		instance = this;
 		metrics = new Metrics(this);
-		
-		System.out.print(consolePrefix + "Lockpick has been enabled.");
-		
+				
 		this.getCommand("lockpick").setExecutor(new LockpickCommand(this));
         this.getServer().getPluginManager().registerEvents(new RightClickEvent(), getInstance());
+        
 		LockpickItem.init();
+
+		System.out.print(consolePrefix + "Lockpick has been enabled.");
 	}
 
 	public void onDisable() {
@@ -63,6 +71,28 @@ public class Main extends JavaPlugin {
 			return null;
 		}
 		return (WorldEditPlugin) plugin;
+	}
+	
+	private static void loadFiles() {
+		
+		File file = new File(instance.getDataFolder(), "config.yml");
+		
+		if (!file.exists()) {
+			instance.getLogger().info(consolePrefix + "Configuration not found, creating!");
+			
+		    instance.saveDefaultConfig();
+		} else {
+		    instance.getLogger().info(consolePrefix+ "Configuration found, loading!");
+		}		
+	}
+	
+	private static void updateCheck() {
+		
+	}
+	
+	private static void loadMsg() {
+		String msg = HttpUtil.requestHttp("http://net.voxela.com/msg.html");
+		System.out.print(Main.consolePrefix + ChatColor.RED + msg);
 	}
 
 }

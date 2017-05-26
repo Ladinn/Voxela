@@ -1,0 +1,11 @@
+# Lockpick - version 1.2 - Developed by Ladinn
+# http://voxe.la/lockpick-spigot
+#
+# Main Configuration
+
+# The time it takes to pick a lock in seconds. Should be under 60.
+time: 30
+
+# The chance, every second, that the lockpicking will fail over 1. (Divisor, 1/x)
+# A value of 50, for example, would mean that there is a 1/50 chance of failure every second.
+chance: 50

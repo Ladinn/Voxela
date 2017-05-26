@@ -53,15 +53,18 @@ public class PickLock {
 		}
 		
 		new BukkitRunnable() {
-						
-			Location original = player.getLocation();
 			
-			BarHandler bar = new BarHandler(" ", BarColor.RED, BarStyle.SOLID);
+			// Get config values
+			int time = Main.getInstance().getConfig().getInt("time");
+			int chance = Main.getInstance().getConfig().getInt("chance");
 			
+			// Boss bar math
 			double barTime = 1.0;
-			
-			int time = 30;
-			
+			double subtract = (0.001111111111 * time);
+						
+			Location original = player.getLocation();			
+			BarHandler bar = new BarHandler(" ", BarColor.RED, BarStyle.SOLID);
+									
 			public void run() {
 				
 				bar.setText(ChatColor.GOLD + "Picking lock...");
@@ -86,9 +89,9 @@ public class PickLock {
 					success(player, loc, clickedBlock, item, mat);					
 					this.cancel();
 				}
-				
-				int random = (int) (Math.random() * 35 + 1);
-				if (random == 25) {
+
+				int random = (int) (Math.random() * chance + 1);
+				if (random == 1) {
 					failure(player, item);
 					bar.resetAllPlayersBars();
 					this.cancel();
@@ -101,7 +104,7 @@ public class PickLock {
 				world.spawnParticle(Particle.CRIT, clickedBlock.getLocation().add(0, 1, 0), random += 25);
 				
 				time--;
-				barTime -= 0.03333333333;
+				barTime -= subtract;
 				
 			}
 			
