@@ -42,12 +42,16 @@ public class PickLock {
 				
 				String name = clickedBlock.getType().name().toLowerCase().replace("_block", "").replace("_", " ");
 				
-				String title = ChatColor.RED + "Theft in progress!";
-				String subtitle = "" + ChatColor.GRAY + ChatColor.ITALIC + "Someone is attempting to lockpick your " + ChatColor.DARK_AQUA + ChatColor.ITALIC + name + "!";
-
+				if (Main.titleAPI == true) {
+					String title = ChatColor.RED + "Theft in progress!";
+					String subtitle = "" + ChatColor.GRAY + ChatColor.ITALIC + "Someone is attempting to lockpick your " + ChatColor.DARK_AQUA + ChatColor.ITALIC + name + "!";
+					TitleAPI.sendFullTitle(owner, 20, 60, 20, title, subtitle);
+				} else {
+					player.sendMessage(Main.gamePrefix + ChatColor.RED + "Theft in progress!");
+					player.sendMessage(ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + "Someone is attempting to lockpick your " + ChatColor.DARK_AQUA + name + "!");
+				}
+				
 				owner.playSound(owner.getLocation(), Sound.ENTITY_BLAZE_DEATH, 0.5F, 3.0F);
-
-				TitleAPI.sendFullTitle(owner, 20, 60, 20, title, subtitle);
 				
 			}
 		}
@@ -111,7 +115,7 @@ public class PickLock {
 		}.runTaskTimer(Main.getInstance(), 20L, 20L);
 	}
 	
-	private static void success(Player player, Location loc, Block clickedBlock, ItemStack item, Material mat) {
+	public static void success(Player player, Location loc, Block clickedBlock, ItemStack item, Material mat) {
 		
 		World world = player.getWorld();
 		String material = mat.toString().toLowerCase();

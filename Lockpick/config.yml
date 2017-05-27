@@ -1,11 +1,33 @@
+#   _                   _            _        _    
+#  | |                 | |          (_)      | |   
+#  | |      ___    ___ | | __ _ __   _   ___ | | __
+#  | |     / _ \  / __|| |/ /| '_ \ | | / __|| |/ /
+#  | |____| (_) || (__ |   < | |_) || || (__ |   < 
+#  \_____/ \___/  \___||_|\_\| .__/ |_| \___||_|\_\
+#                            | |                   
+#                            |_|                   
+# 
 # Lockpick - version 1.2 - Developed by Ladinn
 # http://voxe.la/lockpick-spigot
-#
+# 
 # Main Configuration
-
+# 
 # The time it takes to pick a lock in seconds. Should be under 60.
 time: 30
-
+# 
 # The chance, every second, that the lockpicking will fail over 1. (Divisor, 1/x)
 # A value of 50, for example, would mean that there is a 1/50 chance of failure every second.
 chance: 50
+# 
+# The item that will be used as the lockpick.
+# Default value is a tripwire hook. (131)
+lockpick-item: 131
+# 
+# The item that will be used as the master key.
+# Default value is, also, a tripwire hook. (131)
+master-item: 131
+#
+# Is the master key enabled?
+# If true, you can open any door with the item.
+# Note: the item can only be spawned in by administrators, not crafted.
+master-enabled: false

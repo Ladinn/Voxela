@@ -14,6 +14,7 @@ import org.bukkit.permissions.Permission;
 
 import com.voxela.lockpick.Main;
 import com.voxela.lockpick.items.LockpickItem;
+import com.voxela.lockpick.items.MasterKeyItem;
 import com.voxela.lockpick.runnables.PickLock;
 import com.voxela.lockpick.runnables.UserMap;
 
@@ -75,6 +76,16 @@ public class RightClickEvent implements Listener {
 					if (Main.getWorldGuard().canBuild(player, clickedBlock)) return;
 					
 					event.setCancelled(true);
+										
+					if (MasterKeyItem.isItem(item)) {
+						if (Main.getInstance().getConfig().getBoolean("master-enabled") == true) {
+							PickLock.success(player, player.getLocation(), clickedBlock, item, mat);
+							return;
+						} else {
+							player.sendMessage(Main.gamePrefix + ChatColor.RED + "The master key has been disabled.");
+							return;
+						}
+					}
 					
 					if ( (item.toString().toLowerCase().contains("air")) || !(LockpickItem.isItem(item)) ) {
 						player.sendMessage(Main.gamePrefix + ChatColor.RED + "This thing is locked tight.");

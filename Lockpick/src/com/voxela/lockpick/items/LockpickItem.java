@@ -18,7 +18,10 @@ public class LockpickItem {
 	
 	public static void init() {
 		
-		ItemStack lockpick = new ItemStack(Material.TRIPWIRE_HOOK, 1);
+		int itemId = Main.getInstance().getConfig().getInt("lockpick-item");
+				
+		@SuppressWarnings("deprecation")
+		ItemStack lockpick = new ItemStack(Material.getMaterial(itemId), 1);
 		ItemMeta meta = lockpick.getItemMeta();
 		meta.setDisplayName(ChatColor.GOLD + "Lockpick");
 		meta.setLore(Arrays.asList("Used to break open a", "sealed door or chest."));

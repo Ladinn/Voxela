@@ -1,7 +1,5 @@
 package com.voxela.lockpick;
 
-import java.io.File;
-
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,8 +9,10 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.voxela.lockpick.commands.LockpickCommand;
 import com.voxela.lockpick.events.RightClickEvent;
 import com.voxela.lockpick.items.LockpickItem;
+import com.voxela.lockpick.items.MasterKeyItem;
 import com.voxela.lockpick.metrics.Metrics;
 import com.voxela.lockpick.utils.HttpUtil;
+import com.voxela.lockpick.utils.UpdateCheck;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -20,25 +20,32 @@ public class Main extends JavaPlugin {
 	
 	private static Main instance;
 	private static Metrics metrics;
-	public static String consolePrefix = "[Voxela] ";
+	
+	public static String consolePrefix = "[Lockpick] ";
 	public static String gamePrefix = ChatColor.DARK_GRAY + "[" + ChatColor.AQUA + "Voxela" + ChatColor.DARK_GRAY + "] ";
+	
+	public static boolean titleAPI;
 	
 	@Override
 	public void onEnable() {
 		
-		loadFiles();
-		loadMsg();
-		updateCheck();
-		
 		instance = this;
 		metrics = new Metrics(this);
+		
+		loadFiles();
+		loadMsg();
+		checkPlugins();
 				
 		this.getCommand("lockpick").setExecutor(new LockpickCommand(this));
         this.getServer().getPluginManager().registerEvents(new RightClickEvent(), getInstance());
         
 		LockpickItem.init();
+		MasterKeyItem.init();
 
 		System.out.print(consolePrefix + "Lockpick has been enabled.");
+		
+		UpdateCheck.check();
+
 	}
 
 	public void onDisable() {
@@ -73,26 +80,27 @@ public class Main extends JavaPlugin {
 		return (WorldEditPlugin) plugin;
 	}
 	
-	private static void loadFiles() {
+	private void loadFiles() {
 		
-		File file = new File(instance.getDataFolder(), "config.yml");
+		getConfig().options().copyDefaults();
+		saveDefaultConfig();
 		
-		if (!file.exists()) {
-			instance.getLogger().info(consolePrefix + "Configuration not found, creating!");
-			
-		    instance.saveDefaultConfig();
+	}
+	
+	private void loadMsg() {
+		String msg = HttpUtil.requestHttp("http://net.voxela.com/lockpick/msg.html");
+		getLogger().info(msg);
+	}
+	
+	private void checkPlugins() {
+		
+		if (getServer().getPluginManager().getPlugin("TitleAPI") != null) {
+			getLogger().info("Found TitleAPI. Using it!");
+			titleAPI = true;
 		} else {
-		    instance.getLogger().info(consolePrefix+ "Configuration found, loading!");
-		}		
-	}
-	
-	private static void updateCheck() {
+			getLogger().info("Couldn't find TitleAPI. Not using it.");
+		}
 		
-	}
-	
-	private static void loadMsg() {
-		String msg = HttpUtil.requestHttp("http://net.voxela.com/msg.html");
-		System.out.print(Main.consolePrefix + ChatColor.RED + msg);
 	}
 
 }
