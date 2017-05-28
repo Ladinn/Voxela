@@ -26,11 +26,11 @@ public class UpdateCheck {
 				} catch (IOException e) {
 					Main.getInstance().getLogger().info("Error checking for update.");
 					e.printStackTrace();
+					return;
 				}
-
+				
 				double latest = Double.parseDouble(prop.getProperty("version"));
-				String currentString = Main.getInstance().getDescription().getVersion();
-				double current = Double.parseDouble(currentString.replace("version: ", ""));
+				double current = Main.version;
 						
 				if (latest == current) System.out.print(Main.consolePrefix + "You have the latest version! v" + latest);
 				
@@ -40,7 +40,7 @@ public class UpdateCheck {
 					String msg = HttpUtil.requestHttp("http://net.voxela.com/lockpick/outdated.html");
 					
 					Main.getInstance().getLogger().warning(msg);
-					Main.getInstance().getLogger().warning("You are " + behind + " versions behind.");
+					Main.getInstance().getLogger().warning("You are " + (int) behind + " version(s) behind.");
 				}
 				
 			}

@@ -1,10 +1,8 @@
 name: Lockpick
 main: com.voxela.lockpick.Main
-version: 1.3
+version: 1.4
 author: Ladinn
-websote: http://www.voxela.com
-depend: [WorldEdit, WorldGuard]
-softdepend: [TitleAPI]
+website: http://www.voxela.com
 commands:
     lockpick:
         description: Main command.

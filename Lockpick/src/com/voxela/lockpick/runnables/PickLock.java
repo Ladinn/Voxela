@@ -1,6 +1,5 @@
 package com.voxela.lockpick.runnables;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -18,7 +17,6 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.material.Openable;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.connorlinfoot.titleapi.TitleAPI;
 import com.voxela.lockpick.Main;
 import com.voxela.lockpick.handlers.BarHandler;
 import com.voxela.lockpick.items.LockpickItem;
@@ -27,7 +25,6 @@ import net.md_5.bungee.api.ChatColor;
 
 public class PickLock {
 				
-	@SuppressWarnings("deprecation")
 	public static void run(Player player, Block clickedBlock, ItemStack item, Material mat) {
 		
 		System.out.print(Main.consolePrefix + player.getName() + " is attempting to lockpick...");
@@ -35,26 +32,6 @@ public class PickLock {
 		UserMap.setLockpicking(player);
 		
 		player.sendMessage(Main.gamePrefix + ChatColor.GOLD + "Picking lock...");
-		
-		for (Player owner : Bukkit.getOnlinePlayers()) {
-			
-			if (Main.getWorldGuard().canBuild(owner, clickedBlock) && !(owner.isOp())) {
-				
-				String name = clickedBlock.getType().name().toLowerCase().replace("_block", "").replace("_", " ");
-				
-				if (Main.titleAPI == true) {
-					String title = ChatColor.RED + "Theft in progress!";
-					String subtitle = "" + ChatColor.GRAY + ChatColor.ITALIC + "Someone is attempting to lockpick your " + ChatColor.DARK_AQUA + ChatColor.ITALIC + name + "!";
-					TitleAPI.sendFullTitle(owner, 20, 60, 20, title, subtitle);
-				} else {
-					player.sendMessage(Main.gamePrefix + ChatColor.RED + "Theft in progress!");
-					player.sendMessage(ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + "Someone is attempting to lockpick your " + ChatColor.DARK_AQUA + name + "!");
-				}
-				
-				owner.playSound(owner.getLocation(), Sound.ENTITY_BLAZE_DEATH, 0.5F, 3.0F);
-				
-			}
-		}
 		
 		new BukkitRunnable() {
 			
@@ -116,6 +93,8 @@ public class PickLock {
 	}
 	
 	public static void success(Player player, Location loc, Block clickedBlock, ItemStack item, Material mat) {
+		
+		System.out.print(Main.consolePrefix + player.getName() + " has successfully lockpicked a(n) " + mat.toString() + "!");
 		
 		World world = player.getWorld();
 		String material = mat.toString().toLowerCase();

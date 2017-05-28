@@ -13,7 +13,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class MasterKeyItem {
 
-	private static ItemStack item;
+	public static ItemStack item;
 	
 	public static void init() {
 		

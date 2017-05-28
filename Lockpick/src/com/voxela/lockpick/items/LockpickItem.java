@@ -14,7 +14,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class LockpickItem {
 	
-	private static ItemStack item;
+	public static ItemStack item;
 	
 	public static void init() {
 		

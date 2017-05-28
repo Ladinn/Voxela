@@ -2,10 +2,12 @@ package com.voxela.lockpick.events;
 
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -36,27 +38,32 @@ public class RightClickEvent implements Listener {
 			add(Material.IRON_DOOR_BLOCK);
 			add(Material.CHEST);
 			add(Material.TRAPPED_CHEST);
-			add(Material.BLACK_SHULKER_BOX);
-			add(Material.BLUE_SHULKER_BOX);
-			add(Material.BROWN_SHULKER_BOX);
-			add(Material.CYAN_SHULKER_BOX);
-			add(Material.GRAY_SHULKER_BOX);
-			add(Material.GREEN_SHULKER_BOX);
-			add(Material.LIGHT_BLUE_SHULKER_BOX);
-			add(Material.LIME_SHULKER_BOX);
-			add(Material.MAGENTA_SHULKER_BOX);
-			add(Material.ORANGE_SHULKER_BOX);
-			add(Material.PINK_SHULKER_BOX);
-			add(Material.PURPLE_SHULKER_BOX);
-			add(Material.ORANGE_SHULKER_BOX);
-			add(Material.RED_SHULKER_BOX);
-			add(Material.SILVER_SHULKER_BOX);
-			add(Material.WHITE_SHULKER_BOX);
-			add(Material.YELLOW_SHULKER_BOX);
+			
+			if ((Bukkit.getVersion().contains("1.11") || (Bukkit.getVersion().contains("1.12")))) {
+				
+				add(Material.BLACK_SHULKER_BOX);
+				add(Material.BLUE_SHULKER_BOX);
+				add(Material.BROWN_SHULKER_BOX);
+				add(Material.CYAN_SHULKER_BOX);
+				add(Material.GRAY_SHULKER_BOX);
+				add(Material.GREEN_SHULKER_BOX);
+				add(Material.LIGHT_BLUE_SHULKER_BOX);
+				add(Material.LIME_SHULKER_BOX);
+				add(Material.MAGENTA_SHULKER_BOX);
+				add(Material.ORANGE_SHULKER_BOX);
+				add(Material.PINK_SHULKER_BOX);
+				add(Material.PURPLE_SHULKER_BOX);
+				add(Material.ORANGE_SHULKER_BOX);
+				add(Material.RED_SHULKER_BOX);
+				add(Material.SILVER_SHULKER_BOX);
+				add(Material.WHITE_SHULKER_BOX);
+				add(Material.YELLOW_SHULKER_BOX);
+				
+			}
 		}
 	};
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void rightClick(PlayerInteractEvent event) {
 		
 		Player player = event.getPlayer();
@@ -73,7 +80,7 @@ public class RightClickEvent implements Listener {
 			
 				if (clickedBlock.getType().equals(mat)) {
 					
-					if (Main.getWorldGuard().canBuild(player, clickedBlock)) return;
+					if (!(event.isCancelled())) return;
 					
 					event.setCancelled(true);
 										
